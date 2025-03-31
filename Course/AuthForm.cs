@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Configuration;
+using System.Security.Cryptography;
 
 namespace Course
 {
@@ -45,6 +47,14 @@ namespace Course
 
         private void button1_Click(object sender, EventArgs e)
         {
+            var hash = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(textBox2.Text));
+            var password = BitConverter.ToString(hash).Replace("-", string.Empty).ToLower();
+            if (textBox1.Text == ConfigurationManager.AppSettings["initLogin"] && 
+                textBox2.Text == ConfigurationManager.AppSettings["initPwd"])
+            {
+                // navigate to db recovery
+                return;
+            }
             var userData = Connection.GetUser(textBox1.Text, textBox2.Text);
             if (userData.Rows.Count == 1)
             {

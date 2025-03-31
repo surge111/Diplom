@@ -30,8 +30,7 @@ namespace Course
         static public DataTable GetUser(string login, string password)
         {
             login = login.Replace("\"", "\\\"");
-            var a = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(password));
-            
+            var a = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(password));
             password = BitConverter.ToString(a).Replace("-", string.Empty).ToLower();
             Connection.Open();
             var cmd = new MySqlCommand($"select * from `user` inner join worker inner join role on WorkerId=UserWorkerId and RoleId=UserRoleId where UserLogin=\"{login}\" and UserPassword=\"{password}\"", conn);
