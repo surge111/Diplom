@@ -38,6 +38,7 @@
             this.hidePasswordButton1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button2 = new System.Windows.Forms.Button();
             this.textBox1.SuspendLayout();
             this.textBox2.SuspendLayout();
             this.SuspendLayout();
@@ -75,7 +76,7 @@
             this.button1.Enabled = false;
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(54, 255);
+            this.button1.Location = new System.Drawing.Point(54, 221);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(206, 28);
             this.button1.TabIndex = 4;
@@ -151,12 +152,29 @@
             this.panel1.Size = new System.Drawing.Size(318, 45);
             this.panel1.TabIndex = 5;
             // 
+            // button2
+            // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.button2.BackColor = System.Drawing.Color.Peru;
+            this.button2.Cursor = System.Windows.Forms.Cursors.Default;
+            this.button2.Enabled = false;
+            this.button2.FlatAppearance.BorderSize = 0;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Location = new System.Drawing.Point(54, 255);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(206, 28);
+            this.button2.TabIndex = 6;
+            this.button2.Text = "Настройки";
+            this.button2.UseVisualStyleBackColor = false;
+            // 
             // AuthForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.NavajoWhite;
             this.ClientSize = new System.Drawing.Size(318, 295);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label2);
@@ -188,6 +206,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button hidePasswordButton1;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button button2;
     }
 }
 

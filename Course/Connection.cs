@@ -6,19 +6,41 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
+using System.Configuration;
 
 namespace Course
 {
     static class Connection
     {
-        static private string connStr = "host=127.0.0.1;user=root;pwd=root;database=db35";
+        static private string connStr = $"host={ConfigurationManager.AppSettings["host"]};" +
+            $"user={ConfigurationManager.AppSettings["user"]};" +
+            $"pwd={ConfigurationManager.AppSettings["pwd"]};" +
+            $"database={ConfigurationManager.AppSettings["db"]}";
         static private MySqlConnection conn = new MySqlConnection(connStr);
         static public void Open()
         {
-            if (conn.State == System.Data.ConnectionState.Closed)
+            if (conn.State == ConnectionState.Closed)
             {
-                conn.Open();
+                try
+                {
+                    conn.Open();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
+        }
+        static public void ChangeDb()
+        {
+            conn.ChangeDatabase(ConfigurationManager.AppSettings["db"]);
+        }
+        static public void Update()
+        {
+            connStr = $"host={ConfigurationManager.AppSettings["host"]};" +
+            $"user={ConfigurationManager.AppSettings["user"]};" +
+            $"pwd={ConfigurationManager.AppSettings["pwd"]};";
+            conn = new MySqlConnection(connStr);
         }
         static public bool Test()
         {
@@ -36,7 +58,14 @@ namespace Course
             login = login.Replace("\"", "\\\"");
             var a = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(password));
             password = BitConverter.ToString(a).Replace("-", string.Empty).ToLower();
-            Connection.Open();
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             var cmd = new MySqlCommand($"select * from `user` inner join worker inner join role on WorkerId=UserWorkerId and RoleId=UserRoleId where UserLogin=\"{login}\" and UserPassword=\"{password}\"", conn);
             var da = new MySqlDataAdapter(cmd);
             cmd.ExecuteNonQuery();
@@ -47,7 +76,14 @@ namespace Course
         }
         static public string[] GetCategories()
         {
-            Connection.Open();
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             var cmd = new MySqlCommand("select CategoryName from category", conn);
             var da = new MySqlDataAdapter(cmd);
             cmd.ExecuteNonQuery();
@@ -63,7 +99,14 @@ namespace Course
         }
         static public string[] GetSuppliers()
         {
-            Connection.Open();
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             var cmd = new MySqlCommand("select SupplierName from supplier", conn);
             var da = new MySqlDataAdapter(cmd);
             cmd.ExecuteNonQuery();
@@ -79,7 +122,14 @@ namespace Course
         }
         static public KeyValuePair<string, string>[] GetWorkers()
         {
-            Connection.Open();
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             var cmd = new MySqlCommand("select WorkerId, WorkerSurname, WorkerName, WorkerPatronymic from worker", conn);
             var da = new MySqlDataAdapter(cmd);
             cmd.ExecuteNonQuery();
@@ -95,7 +145,14 @@ namespace Course
         }
         static public string[] GetRoles()
         {
-            Connection.Open();
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             var cmd = new MySqlCommand("select RoleName from role", conn);
             var da = new MySqlDataAdapter(cmd);
             cmd.ExecuteNonQuery();
@@ -111,7 +168,14 @@ namespace Course
         }
         static public Dictionary<string, string> GetProductById(string id)
         {
-            Connection.Open();
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             var cmd = new MySqlCommand($"select * from product where ProductId=\"{id.Replace("\"", "\\\"")}\"", conn);
             var da = new MySqlDataAdapter(cmd);
             cmd.ExecuteNonQuery();
@@ -127,7 +191,14 @@ namespace Course
         }
         static public string GetCategoryById(string id)
         {
-            Connection.Open();
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             var cmd = new MySqlCommand($"select CategoryName from category where CategoryId=\"{id.Replace("\"", "\\\"")}\"", conn);
             var da = new MySqlDataAdapter(cmd);
             cmd.ExecuteNonQuery();
@@ -139,7 +210,14 @@ namespace Course
         }
         static public string GetSupplierById(string id)
         {
-            Connection.Open();
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             var cmd = new MySqlCommand($"select SupplierName from supplier where SupplierId=\"{id.Replace("\"", "\\\"")}\"", conn);
             var da = new MySqlDataAdapter(cmd);
             cmd.ExecuteNonQuery();
@@ -151,7 +229,14 @@ namespace Course
         }
         static public string GetWorkerById(string id)
         {
-            Connection.Open();
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             var cmd = new MySqlCommand($"select WorkerSurname, WorkerName, WorkerPatronymic from worker where WorkerId=\"{id.Replace("\"", "\\\"")}\"", conn);
             var da = new MySqlDataAdapter(cmd);
             cmd.ExecuteNonQuery();
@@ -163,7 +248,14 @@ namespace Course
         }
         static public string GetRoleById(string id)
         {
-            Connection.Open();
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             var cmd = new MySqlCommand($"select RoleName from role where RoleId=\"{id.Replace("\"", "\\\"")}\"", conn);
             var da = new MySqlDataAdapter(cmd);
             cmd.ExecuteNonQuery();
@@ -175,7 +267,14 @@ namespace Course
         }
         static public string GetCategoryId(string category)
         {
-            Connection.Open();
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             var cmd = new MySqlCommand($"select CategoryId from category where CategoryName=\"{category.Replace("\"", "\\\"")}\"", conn);
             var da = new MySqlDataAdapter(cmd);
             cmd.ExecuteNonQuery();
@@ -187,7 +286,14 @@ namespace Course
         }
         static public string GetSupplierId(string supplier)
         {
-            Connection.Open();
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             var cmd = new MySqlCommand($"select SupplierId from supplier where SupplierName=\"{supplier.Replace("\"", "\\\"")}\"", conn);
             var da = new MySqlDataAdapter(cmd);
             cmd.ExecuteNonQuery();
@@ -199,7 +305,14 @@ namespace Course
         }
         static public string GetRoleId(string role)
         {
-            Connection.Open();
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             var cmd = new MySqlCommand($"select RoleId from role where RoleName=\"{role.Replace("\"", "\\\"")}\"", conn);
             var da = new MySqlDataAdapter(cmd);
             cmd.ExecuteNonQuery();
@@ -211,7 +324,14 @@ namespace Course
         }
         //static public string GetWorkerId(string workerPhone)
         //{
-        //    Connection.Open();
+        //    try
+        //    {
+        //        Connection.Open();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
         //    var cmd = new MySqlCommand($"select WorkerId from worker where WorkerPhone=\"{workerPhone.Replace("\"", "\\\"")}\"", conn);
         //    var da = new MySqlDataAdapter(cmd);
         //    cmd.ExecuteNonQuery();
@@ -324,7 +444,14 @@ namespace Course
             {
                 cmdText += " order by UserId";
             }
-            Connection.Open();
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             var cmd = new MySqlCommand(cmdText, conn);
             var da = new MySqlDataAdapter(cmd);
             cmd.ExecuteNonQuery();
@@ -373,7 +500,14 @@ namespace Course
             {
                 cmdStr = $"insert into `{tableName}`({string.Join(", ", obj.Keys)}) values ({string.Join(", ", obj.Values)})";
             }
-            Connection.Open();
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             var tr = conn.BeginTransaction();
             var cmd = new MySqlCommand(cmdStr, conn, tr);
             var res = cmd.ExecuteNonQuery();
@@ -393,14 +527,7 @@ namespace Course
             var pairs = new string[] { };
             foreach (string key in obj.Keys)
             {
-                if (key == GetTableIdColumn(tableName))
-                {
-                    continue;
-                }
-                else
-                {
-                    pairs = pairs.Append($"{key}=\"{obj[key].Replace("\"", "\\\"")}\"").ToArray();
-                }
+                pairs = pairs.Append($"{key}=\"{obj[key].Replace("\"", "\\\"")}\"").ToArray();
             }
             var cmdStr = "";
             if (tableName == "orderitem")
@@ -411,7 +538,14 @@ namespace Course
             {
                 cmdStr = $"update `{tableName}` set {string.Join(", ", pairs)} where {GetTableIdColumn(tableName)}={obj[GetTableIdColumn(tableName)]}";
             }
-            Connection.Open();
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             var tr = conn.BeginTransaction();
             var cmd = new MySqlCommand(cmdStr, conn, tr);
             var res = cmd.ExecuteNonQuery();
@@ -431,21 +565,21 @@ namespace Course
             var pairs = new string[] { };
             foreach (string key in obj.Keys)
             {
-                if (key == GetTableIdColumn(tableName))
-                {
-                    continue;
-                }
-                else
-                {
-                    pairs = pairs.Append($"{key}=\"{obj[key].Replace("\"", "\\\"")}\"").ToArray();
-                }
+                pairs = pairs.Append($"{key}=\"{obj[key].Replace("\"", "\\\"")}\"").ToArray();
             }
             var cmdStr = $"update `{tableName}` set {string.Join(", ", pairs)} where {GetTableIdColumn(tableName)}={obj[GetTableIdColumn(tableName)]}";
             if (tableName == "orderitem")
             {
                 cmdStr = $"update `{tableName}` set {string.Join(", ", pairs)} where OrderItemOrderId={obj["OrderItemOrderId"]} and OrderItemProductId={obj["OrderItemProductId"]}";
             }
-            Connection.Open();
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             var cmd = new MySqlCommand(cmdStr, conn, tr);
             var res = cmd.ExecuteNonQuery();
             Connection.Close();
@@ -454,7 +588,14 @@ namespace Course
         static public bool DeleteObject(string tableName, string id)
         {
             var cmdStr = $"delete from `{tableName}` where {GetTableIdColumn(tableName)}=\"{id.Replace("\"", "\\\"")}\"";
-            Connection.Open();
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             var tr = conn.BeginTransaction();
             var cmd = new MySqlCommand(cmdStr, conn, tr);
             int res;
@@ -484,7 +625,14 @@ namespace Course
             var cmdText = "select * from `orderitem`";
             cmdText += " inner join `product` on ProductId=OrderItemProductId";
             cmdText += $" where OrderItemOrderId=\"{orderId}\"";
-            Connection.Open();
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             var cmd = new MySqlCommand(cmdText, conn);
             var da = new MySqlDataAdapter(cmd);
             cmd.ExecuteNonQuery();
@@ -496,7 +644,14 @@ namespace Course
         static public string GetLastOrderId()
         {
             var cmdText = "select max(OrderId) from `order`";
-            Connection.Open();
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             var cmd = new MySqlCommand(cmdText, conn);
             var da = new MySqlDataAdapter(cmd);
             cmd.ExecuteNonQuery();
@@ -508,7 +663,14 @@ namespace Course
         static public void AddItemToOrder(string orderId, Dictionary<string, string> item)
         {
             var cmdText = $"select OrderItemQuantity from `orderitem` where OrderItemOrderId=\"{orderId}\" and OrderItemProductId=\"{item["OrderItemProductId"]}\"";
-            Connection.Open();
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             var cmd = new MySqlCommand(cmdText, conn);
             var da = new MySqlDataAdapter(cmd);
             cmd.ExecuteNonQuery();
@@ -531,7 +693,14 @@ namespace Course
         static public void DeleteOrderItem(string orderId, string productId)
         {
             var cmdStr = $"delete from `orderitem` where OrderItemOrderId=\"{orderId.Replace("\"", "\\\"")}\" and OrderItemProductId=\"{productId.Replace("\"", "\\\"")}\"";
-            Connection.Open();
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             var tr = conn.BeginTransaction();
             var cmd = new MySqlCommand(cmdStr, conn, tr);
             int res;
@@ -558,7 +727,14 @@ namespace Course
         static public bool ConfirmOrder(Dictionary<string, string> order)
         {
             var orderId = order["OrderId"];
-            Connection.Open();
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             var tr = conn.BeginTransaction();
             var items = GetOrderItems(orderId);
             for (int i = 0; i < items.Rows.Count; i++)
@@ -566,7 +742,14 @@ namespace Course
                 var product = Connection.GetProductById(items.Rows[i].ItemArray[items.Columns["OrderItemProductId"].Ordinal].ToString());
                 if (Convert.ToInt32(product["ProductQuantity"]) < Convert.ToInt32(items.Rows[i].ItemArray[items.Columns["OrderItemQuantity"].Ordinal].ToString()))
                 {
-                    Connection.Open();
+                    try
+                    {
+                        Connection.Open();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
                     tr.Rollback();
                     Connection.Close();
                     return false;
@@ -576,7 +759,14 @@ namespace Course
                 Connection.UpdateObject("product", product, tr);
             }
             Connection.UpdateObject("order", order, tr);
-            Connection.Open();
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             tr.Commit();
             Connection.Close();
             return true;
@@ -584,7 +774,14 @@ namespace Course
         static public string GetProductRevenue(string productId, DateTime dateFrom, DateTime dateTo)
         {
             var cmdText = $"SELECT sum(OrderItemCost * OrderItemQuantity) FROM db35.orderitem inner join `order` on OrderId = OrderItemOrderId where OrderItemProductId = \"{productId}\" and OrderDate >= \"{dateFrom.ToString("yyyy-MM-dd")}\" and OrderDate <= \"{dateTo.ToString("yyyy-MM-dd")}\"";
-            Connection.Open();
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             var cmd = new MySqlCommand(cmdText, conn);
             var da = new MySqlDataAdapter(cmd);
             var res = cmd.ExecuteScalar().ToString();
@@ -606,7 +803,14 @@ namespace Course
             var cmdText = $"select ProductName, OrderItemQuantity, OrderItemCost, (OrderItemQuantity * OrderItemCost) as TotalCost" +
                 $" from orderitem inner join product on OrderItemProductId = ProductId " +
                 $"where OrderItemOrderId = \"{orderId}\"";
-            Connection.Open();
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             var cmd = new MySqlCommand(cmdText, conn);
             var da = new MySqlDataAdapter(cmd);
             var res = cmd.ExecuteScalar().ToString();
@@ -618,7 +822,14 @@ namespace Course
         static public string GetOrderTotalCost(string orderId)
         {
             var cmdText = $"select sum(OrderItemQuantity * OrderItemCost) as TotalCost from orderitem where OrderItemOrderId = \"{orderId}\"";
-            Connection.Open();
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             var cmd = new MySqlCommand(cmdText, conn);
             var da = new MySqlDataAdapter(cmd);
             var res = cmd.ExecuteScalar().ToString();
@@ -634,6 +845,22 @@ namespace Course
             {
                 return "0";
             }
+        }
+        static public bool RecoverDb()
+        {
+            var cmdStr = "CREATE DATABASE IF NOT EXISTS `db35` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */; " +
+                "USE `db35`; ";
+            try
+            {
+                Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            var tr = conn.BeginTransaction();
+            var cmd = new MySqlCommand();
+            Close();
         }
     }
 }
