@@ -20,6 +20,10 @@ namespace Course
                 conn.Open();
             }
         }
+        static public bool Test()
+        {
+            return conn.Ping();
+        }
         static public void Close()
         {
             if (conn.State != ConnectionState.Closed)
