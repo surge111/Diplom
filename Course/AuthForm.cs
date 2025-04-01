@@ -50,7 +50,7 @@ namespace Course
             var hash = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(textBox2.Text));
             var password = BitConverter.ToString(hash).Replace("-", string.Empty).ToLower();
             if (textBox1.Text == ConfigurationManager.AppSettings["initLogin"] && 
-                textBox2.Text == ConfigurationManager.AppSettings["initPwd"])
+                password == ConfigurationManager.AppSettings["initPwd"])
             {
                 var f = new RecoveryForm();
                 this.Visible = false;
