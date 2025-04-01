@@ -881,9 +881,99 @@ namespace Course
             tr.Commit();
             Close();
         }
-        static public void ImportData()
+        public static DataTable GetColumns(string tableName)
         {
-
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            var cmd = new MySqlCommand($"select `COLUMN_NAME` " +
+                    $"from information_schema.columns " +
+                    $"where table_name=\"{tableName}\" and table_schema=\"{ConfigurationManager.AppSettings["db"]}\"", conn);
+            var da = new MySqlDataAdapter(cmd);
+            cmd.ExecuteNonQuery();
+            var dt = new DataTable();
+            da.Fill(dt);
+            Connection.Close();
+            return dt;
         }
+        public static string[] GetTables()
+        {
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            var cmd = new MySqlCommand($"show tables from {ConfigurationManager.AppSettings["db"]}", conn);
+            var da = new MySqlDataAdapter(cmd);
+            cmd.ExecuteNonQuery();
+            var dt = new DataTable();
+            da.Fill(dt);
+            Connection.Close();
+            var tables = new string[] { };
+            for (var i = 0; i < dt.Rows.Count; i++)
+            {
+                tables = tables.Append(dt.Rows[i].ItemArray[0].ToString()).ToArray();
+            }
+            return tables;
+        }
+        public static int ImportData(string[] data, string tableName)
+        {
+            conn.Open();
+            var tr = conn.BeginTransaction();
+            var tbl = Connection.GetColumns(tableName);
+            var columns = new string[] { };
+            foreach (DataRow r in tbl.Rows)
+            {
+                columns = columns.Append(r.ItemArray[0].ToString()).ToArray();
+            }
+            for (var j = 0; j < columns.Length; j++)
+            {
+                columns[j] = $"`{columns[j]}`";
+            }
+            for (var i = 0; i < data.Length; i++)
+            {
+                var item = data[i];
+                var values = item.Split(';');
+                if (!(columns.Length == values.Length))
+                {
+                    tr.Rollback();
+                    conn.Close();
+                    return i;
+                }
+                for (var j = 0; j < values.Length; j++)
+                {
+                    values[j] = values[j] == "" ? "null" : "\"" + values[j].Replace("\"", "\\\"") + "\"";
+                }
+                try
+                {
+                    var cmd = new MySqlCommand($"insert into `{tableName}`({string.Join(", ", columns)}) values ({string.Join(", ", values)})", conn, tr);
+                    var res = cmd.ExecuteNonQuery();
+                    if (res != 1)
+                    {
+                        tr.Rollback();
+                        conn.Close();
+                        return i;
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    tr.Rollback();
+                    conn.Close();
+                    throw ex;
+                }
+            }
+            tr.Commit();
+            conn.Close();
+            return -1;
+        }
+
     }
 }

@@ -15,6 +15,10 @@ namespace Course
         public MenuForm()
         {
             InitializeComponent();
+            if (User.Role != "Администратор")
+            {
+                button7.Visible = false;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -60,6 +64,14 @@ namespace Course
         private void button6_Click(object sender, EventArgs e)
         {
             var f = new ListForm("user");
+            this.Visible = false;
+            f.ShowDialog();
+            this.Visible = true;
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            var f = new RecoveryForm();
             this.Visible = false;
             f.ShowDialog();
             this.Visible = true;

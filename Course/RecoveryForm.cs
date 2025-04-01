@@ -20,27 +20,20 @@ namespace Course
 
         private void RecoveryForm_Load(object sender, EventArgs e)
         {
-            if (Connection.Test())
+            FillCombo();
+        }
+        private void FillCombo()
+        {
+            try
             {
-                var arr = new string[]
-                {
-                    "category",
-                    "order",
-                    "orderitem",
-                    "product",
-                    "role",
-                    "supplier",
-                    "user",
-                    "worker"
-                };
-                comboBox2.DataSource = arr;
+                comboBox2.DataSource = Connection.GetTables();
+                comboBox2.SelectedIndex = -1;
             }
-            else
+            catch
             {
-                MessageBox.Show("Не удалось подключиться к БД", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                ;
             }
         }
-
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBox2.SelectedIndex == -1)
@@ -60,6 +53,7 @@ namespace Course
             {
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            FillCombo();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -71,20 +65,36 @@ namespace Course
             {
                 return;
             }
+            var data = new string[] { };
             using (var stream = d.OpenFile())
             {
                 using (var rdr = new StreamReader(stream))
                 {
-                    var str = "";
+                    var str = rdr.ReadLine();
+                    
                     while (!rdr.EndOfStream)
                     {
                         str = rdr.ReadLine();
-                        var values = str.Split(';');
-                        
+                        data = data.Append(str).ToArray();
                     }
                 }
             }
-            
+            try
+            {
+                var res = Connection.ImportData(data, comboBox2.SelectedValue.ToString());
+                if (res == -1)
+                {
+                    MessageBox.Show($"Импорт в таблицу {comboBox2.SelectedValue} успешно завершён. Добавлено {data.Length} записей", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
+                else
+                {
+                    MessageBox.Show($"Не удалось импортировать данные. При импорте строки {res + 2} произошла ошибка", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
