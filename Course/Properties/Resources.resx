@@ -124,4 +124,7 @@
   <data name="picture" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\picture.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="_struct" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\struct.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
 </root>

@@ -52,7 +52,19 @@ namespace Course
             if (textBox1.Text == ConfigurationManager.AppSettings["initLogin"] && 
                 textBox2.Text == ConfigurationManager.AppSettings["initPwd"])
             {
-                // navigate to db recovery
+                var f = new RecoveryForm();
+                this.Visible = false;
+                f.ShowDialog();
+                this.Visible = true;
+                return;
+            }
+            try
+            {
+                Connection.ChangeDb();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             var userData = Connection.GetUser(textBox1.Text, textBox2.Text);
@@ -133,6 +145,14 @@ namespace Course
             {
                 e.Cancel = true;
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var f = new ConfigForm();
+            this.Visible = false;
+            f.ShowDialog();
+            this.Visible = true;
         }
     }
 }

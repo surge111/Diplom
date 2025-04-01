@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using System.Configuration;
+using System.IO;
 
 namespace Course
 {
@@ -14,8 +15,7 @@ namespace Course
     {
         static private string connStr = $"host={ConfigurationManager.AppSettings["host"]};" +
             $"user={ConfigurationManager.AppSettings["user"]};" +
-            $"pwd={ConfigurationManager.AppSettings["pwd"]};" +
-            $"database={ConfigurationManager.AppSettings["db"]}";
+            $"pwd={ConfigurationManager.AppSettings["pwd"]};";
         static private MySqlConnection conn = new MySqlConnection(connStr);
         static public void Open()
         {
@@ -34,6 +34,16 @@ namespace Course
         static public void ChangeDb()
         {
             conn.ChangeDatabase(ConfigurationManager.AppSettings["db"]);
+            try
+            {
+                Open();
+                Close();
+            }
+            catch (Exception ex)
+            {
+                conn.ChangeDatabase("");
+                throw ex;
+            }
         }
         static public void Update()
         {
@@ -846,10 +856,9 @@ namespace Course
                 return "0";
             }
         }
-        static public bool RecoverDb()
+        static public void RecoverDb()
         {
-            var cmdStr = "CREATE DATABASE IF NOT EXISTS `db35` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */; " +
-                "USE `db35`; ";
+            var cmdStr = File.ReadAllText(Properties.Resources._struct);
             try
             {
                 Open();
@@ -859,8 +868,22 @@ namespace Course
                 throw ex;
             }
             var tr = conn.BeginTransaction();
-            var cmd = new MySqlCommand();
+            var cmd = new MySqlCommand(cmdStr, conn, tr);
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                tr.Rollback();
+                throw ex;
+            }
+            tr.Commit();
             Close();
+        }
+        static public void ImportData()
+        {
+
         }
     }
 }

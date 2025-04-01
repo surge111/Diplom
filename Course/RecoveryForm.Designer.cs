@@ -46,12 +46,13 @@ namespace Course
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Location = new System.Drawing.Point(13, 17);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(267, 48);
             this.button1.TabIndex = 0;
             this.button1.Text = "Восстановить структуру";
             this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label5
             // 
@@ -101,6 +102,7 @@ namespace Course
             this.button2.TabIndex = 10;
             this.button2.Text = "Импортировать CSV";
             this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // RecoveryForm
             // 
@@ -114,7 +116,7 @@ namespace Course
             this.Controls.Add(this.button1);
             this.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "RecoveryForm";
             this.Text = "Пекарня \"Круглова\"";
             this.Load += new System.EventHandler(this.RecoveryForm_Load);
