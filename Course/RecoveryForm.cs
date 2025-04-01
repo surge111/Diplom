@@ -40,6 +40,10 @@ namespace Course
             {
                 button2.Enabled = false;
             }
+            else
+            {
+                button2.Enabled = true;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -94,6 +98,18 @@ namespace Course
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void comboBox2_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0)
+                return;
+            using (var brush = new SolidBrush(e.ForeColor))
+            {
+                e.DrawBackground();
+                e.Graphics.DrawString(comboBox2.Items[e.Index].ToString(), e.Font, brush, e.Bounds);
+                e.DrawFocusRectangle();
             }
         }
     }

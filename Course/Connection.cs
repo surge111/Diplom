@@ -33,10 +33,10 @@ namespace Course
         }
         static public void ChangeDb()
         {
-            conn.ChangeDatabase(ConfigurationManager.AppSettings["db"]);
             try
             {
                 Open();
+                conn.ChangeDatabase(ConfigurationManager.AppSettings["db"]);
                 Close();
             }
             catch (Exception ex)

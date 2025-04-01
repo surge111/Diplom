@@ -86,6 +86,7 @@ namespace Course
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(269, 27);
             this.comboBox2.TabIndex = 9;
+            this.comboBox2.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.comboBox2_DrawItem);
             this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
             // button2
