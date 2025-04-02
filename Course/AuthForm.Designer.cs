@@ -39,8 +39,15 @@
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.button3 = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.textBox1.SuspendLayout();
             this.textBox2.SuspendLayout();
+            this.textBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // textBox1
@@ -53,7 +60,7 @@
             this.textBox1.Location = new System.Drawing.Point(54, 96);
             this.textBox1.MaxLength = 100;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(206, 26);
+            this.textBox1.Size = new System.Drawing.Size(200, 26);
             this.textBox1.TabIndex = 0;
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
@@ -64,7 +71,7 @@
             this.textBoxUnderline1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.textBoxUnderline1.Location = new System.Drawing.Point(0, 24);
             this.textBoxUnderline1.Name = "textBoxUnderline1";
-            this.textBoxUnderline1.Size = new System.Drawing.Size(206, 2);
+            this.textBoxUnderline1.Size = new System.Drawing.Size(200, 2);
             this.textBoxUnderline1.TabIndex = 0;
             // 
             // button1
@@ -76,9 +83,9 @@
             this.button1.Enabled = false;
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(54, 221);
+            this.button1.Location = new System.Drawing.Point(54, 194);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(206, 28);
+            this.button1.Size = new System.Drawing.Size(200, 28);
             this.button1.TabIndex = 4;
             this.button1.Text = "Войти";
             this.button1.UseVisualStyleBackColor = false;
@@ -100,11 +107,10 @@
             this.textBox2.BackColor = System.Drawing.Color.PaleGoldenrod;
             this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBox2.Controls.Add(this.textBoxUnderline2);
-            this.textBox2.Controls.Add(this.hidePasswordButton1);
             this.textBox2.Location = new System.Drawing.Point(54, 156);
             this.textBox2.MaxLength = 100;
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(206, 26);
+            this.textBox2.Size = new System.Drawing.Size(177, 26);
             this.textBox2.TabIndex = 2;
             this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             this.textBox2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox2_KeyPress);
@@ -115,18 +121,17 @@
             this.textBoxUnderline2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.textBoxUnderline2.Location = new System.Drawing.Point(0, 24);
             this.textBoxUnderline2.Name = "textBoxUnderline2";
-            this.textBoxUnderline2.Size = new System.Drawing.Size(206, 2);
+            this.textBoxUnderline2.Size = new System.Drawing.Size(177, 2);
             this.textBoxUnderline2.TabIndex = 0;
             // 
             // hidePasswordButton1
             // 
-            this.hidePasswordButton1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.hidePasswordButton1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.hidePasswordButton1.BackColor = System.Drawing.Color.Peru;
             this.hidePasswordButton1.FlatAppearance.BorderSize = 0;
             this.hidePasswordButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.hidePasswordButton1.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.hidePasswordButton1.Location = new System.Drawing.Point(180, 0);
+            this.hidePasswordButton1.Location = new System.Drawing.Point(228, 156);
             this.hidePasswordButton1.Name = "hidePasswordButton1";
             this.hidePasswordButton1.Size = new System.Drawing.Size(26, 26);
             this.hidePasswordButton1.TabIndex = 0;
@@ -149,7 +154,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(318, 45);
+            this.panel1.Size = new System.Drawing.Size(312, 45);
             this.panel1.TabIndex = 5;
             // 
             // button2
@@ -160,20 +165,85 @@
             this.button2.Cursor = System.Windows.Forms.Cursors.Default;
             this.button2.FlatAppearance.BorderSize = 0;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(54, 255);
+            this.button2.Location = new System.Drawing.Point(54, 228);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(206, 28);
+            this.button2.Size = new System.Drawing.Size(200, 28);
             this.button2.TabIndex = 6;
             this.button2.Text = "Настройки";
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(54, 195);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(56, 18);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Captcha";
+            this.label3.Visible = false;
+            // 
+            // textBox3
+            // 
+            this.textBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox3.BackColor = System.Drawing.Color.PaleGoldenrod;
+            this.textBox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBox3.Controls.Add(this.label4);
+            this.textBox3.Location = new System.Drawing.Point(54, 216);
+            this.textBox3.MaxLength = 100;
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(177, 26);
+            this.textBox3.TabIndex = 7;
+            this.textBox3.Visible = false;
+            this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
+            // 
+            // label4
+            // 
+            this.label4.BackColor = System.Drawing.Color.DarkRed;
+            this.label4.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.label4.Location = new System.Drawing.Point(0, 24);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(177, 2);
+            this.label4.TabIndex = 0;
+            // 
+            // button3
+            // 
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button3.BackColor = System.Drawing.Color.Peru;
+            this.button3.FlatAppearance.BorderSize = 0;
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button3.Location = new System.Drawing.Point(228, 216);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(26, 26);
+            this.button3.TabIndex = 10;
+            this.button3.Text = "⭯";
+            this.button3.UseVisualStyleBackColor = false;
+            this.button3.Visible = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(54, 248);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(200, 102);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 11;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Visible = false;
             // 
             // AuthForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.NavajoWhite;
-            this.ClientSize = new System.Drawing.Size(318, 295);
+            this.ClientSize = new System.Drawing.Size(312, 268);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.hidePasswordButton1);
+            this.Controls.Add(this.textBox3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.button1);
@@ -190,6 +260,8 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AuthForm_FormClosing);
             this.textBox1.ResumeLayout(false);
             this.textBox2.ResumeLayout(false);
+            this.textBox3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -207,6 +279,11 @@
         private System.Windows.Forms.Button hidePasswordButton1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 

@@ -9,11 +9,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Configuration;
 using System.Security.Cryptography;
+using System.Threading;
 
 namespace Course
 {
     public partial class AuthForm : Form
     {
+        private string captcha = "";
         public AuthForm()
         {
             InitializeComponent();
@@ -68,7 +70,7 @@ namespace Course
                 return;
             }
             var userData = Connection.GetUser(textBox1.Text, textBox2.Text);
-            if (userData.Rows.Count == 1)
+            if (userData.Rows.Count == 1 || (textBox3.Visible && textBox3.Text != captcha))
             {
                 var role = userData.Rows[0].ItemArray[userData.Columns["RoleName"].Ordinal].ToString();
                 var id = userData.Rows[0].ItemArray[userData.Columns["RoleId"].Ordinal].ToString();
@@ -95,19 +97,47 @@ namespace Course
             }
             else
             {
-                MessageBox.Show("Неверно введены логин или пароль","",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
+                var captchaVisible = textBox3.Visible;
+                MessageBox.Show(textBox3.Visible ? "Неверно введены логин, пароль или Captcha" : "Неверно введены логин или пароль","",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
                 ClearForm();
+                SetCaptchaVisibility(true);
+                if (captchaVisible)
+                {
+                    this.Enabled = false;
+                    Thread.Sleep(10000);
+                    this.Enabled = true;
+                }
             }
         }
         private void ClearForm()
         {
             textBox1.Text = "";
             textBox2.Text = "";
+            textBox3.Text = "";
             textBoxUnderline1.BackColor = Color.DarkRed;
             textBoxUnderline2.BackColor = Color.DarkRed;
-            button1.Enabled = false;
+            SwitchButton();
+            if (textBox3.Visible)
+            {
+                SetCaptchaVisibility(false);
+            }
         }
-
+        private void SetCaptchaVisibility(bool isVisible)
+        {
+            if (isVisible)
+            {
+                ChangeCaptcha();
+            }
+            this.Height = isVisible ? this.Height + 170 : this.Height - 170;
+            label3.Visible = isVisible;
+            textBox3.Visible = isVisible;
+            button3.Visible = isVisible;
+            pictureBox1.Visible = isVisible;
+        }
+        private void SwitchButton()
+        {
+            button1.Enabled = textBox1.Text.Length > 0 && textBox2.Text.Length > 0 && (textBox3.Text.Length == 4 || !textBox3.Visible);
+        }
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             if (textBox1.Text.Length > 0)
@@ -118,7 +148,7 @@ namespace Course
             {
                 textBoxUnderline1.BackColor = Color.DarkRed;
             }
-            button1.Enabled = textBox1.Text.Length > 0 && textBox2.Text.Length > 0;
+            SwitchButton();
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
@@ -131,7 +161,7 @@ namespace Course
             {
                 textBoxUnderline2.BackColor = Color.DarkRed;
             }
-            button1.Enabled = textBox1.Text.Length > 0 && textBox2.Text.Length > 0;
+            SwitchButton();
         }
 
         private void hidePasswordButton1_Click(object sender, EventArgs e)
@@ -153,6 +183,57 @@ namespace Course
             this.Visible = false;
             f.ShowDialog();
             this.Visible = true;
+        }
+        private void ChangeCaptcha()
+        {
+            var rnd = new Random();
+            captcha = "";
+            var alpha = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890";
+            for (int i = 0; i < 4; i++)
+            {
+                captcha += alpha[rnd.Next(alpha.Length)];
+            }
+            var captchaImg = new Bitmap(150, 75);
+            var g = Graphics.FromImage(captchaImg);
+            g.Clear(Color.Tan);
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    g.DrawLine(Pens.Peru, new Point(0, rnd.Next(i * 25, (i + 1) * 25)), new Point(150, rnd.Next(i * 25, (i + 1) * 25)));
+                }
+
+            }
+            for (int i = 0; i < 10; i++)
+            {
+                g.DrawLine(Pens.Peru, new Point(rnd.Next(150), 0), new Point(rnd.Next(150), 75));
+            }
+            var font = new Font("Comic Sans MS", 14.25F, FontStyle.Strikeout, GraphicsUnit.Point);
+            for (int i = 0; i < 4; i++)
+            {
+                g.DrawString(captcha[i].ToString(), font, Brushes.Black, new Point(rnd.Next(10 + 36 * i, 25 + 36 * i), rnd.Next(10, 50)));
+            }
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = 0; j < 2; j++)
+                {
+                    g.DrawLine(Pens.Peru, new Point(rnd.Next(i * 30, (i + 1) * 30), 0), new Point(rnd.Next(i * 30, (i + 1) * 30), 75));
+                }
+                
+            }
+            g.Save();
+            pictureBox1.Image = captchaImg;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            ChangeCaptcha();
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+            label4.BackColor = textBox3.Text.Length == 4 ? Color.DarkGreen : Color.DarkRed;
+            SwitchButton();
         }
     }
 }
