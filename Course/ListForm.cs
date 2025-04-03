@@ -50,6 +50,7 @@ namespace Course
                 panel2.Visible = false;
                 flowLayoutPanel2.Visible = false;
                 contextMenuStrip1.Items.Remove(contextMenuStrip1.Items["добавитьВЗаказToolStripMenuItem"]);
+                menuStrip1.Visible = false;
             }
             if (tableName == "order")
             {
@@ -57,29 +58,38 @@ namespace Course
                 contextMenuStrip1.Items.Remove(contextMenuStrip1.Items["добавитьToolStripMenuItem"]);
             }
             FillCombos();
-            FillDGVData();
+            GetTotalPages();
             InsertPages();
+            FillDGVData();
         }
         private void InsertPages()
         {
-            var btn = button2;
-            var linkLable = new LinkLabel();
-            linkLable.AutoSize = true;
-            linkLable.LinkColor = System.Drawing.Color.Chocolate;
-            linkLable.Location = new System.Drawing.Point(41, 8);
-            linkLable.Margin = new System.Windows.Forms.Padding(5, 8, 5, 0);
-            linkLable.Size = new System.Drawing.Size(14, 18);
-            linkLable.TabIndex = 4;
-            linkLable.TabStop = true;
-            linkLable.Text = "1";
-            linkLable.VisitedLinkColor = System.Drawing.Color.Sienna;
-            flowLayoutPanel1.Controls.Remove(btn);
+            var btn1 = button1;
+            var btn2 = button2;
+            flowLayoutPanel1.Controls.Clear();
+            flowLayoutPanel1.Controls.Add(btn1);
             for (int i = 1; i <= totalPages; i++)
             {
-                linkLable.Text = i.ToString();
-                flowLayoutPanel1.Controls.Add(linkLabel1);
+                var linkLabel = new LinkLabel();
+                linkLabel.AutoSize = true;
+                linkLabel.LinkColor = Color.Chocolate;
+                linkLabel.Location = new Point(41, 8);
+                linkLabel.Margin = new Padding(5, 8, 5, 0);
+                linkLabel.Size = new Size(14, 18);
+                linkLabel.TabIndex = 4;
+                linkLabel.TabStop = true;
+                linkLabel.VisitedLinkColor = Color.Chocolate;
+                linkLabel.Click += new EventHandler(this.linkLabel_Click);
+                linkLabel.Name = $"ll{i}";
+                linkLabel.Text = i.ToString();
+                if (linkLabel.Text == page.ToString())
+                {
+                    linkLabel.LinkBehavior = LinkBehavior.NeverUnderline;
+                    linkLabel.LinkColor = Color.Sienna;
+                }
+                flowLayoutPanel1.Controls.Add(linkLabel);
             }
-            flowLayoutPanel1.Controls.Add(btn);
+            flowLayoutPanel1.Controls.Add(btn2);
         }
         private void FillCombos()
         {
@@ -118,17 +128,13 @@ namespace Course
             {
                 case "category":
                     {
-                        dataGridView1.Columns["CategoryId"].Visible = true;
                         dataGridView1.Columns["CategoryName"].Visible = true;
-                        dataGridView1.Columns["CategoryId"].HeaderText = "#";
                         dataGridView1.Columns["CategoryName"].HeaderText = "Наименование";
                         break;
                     }
                 case "supplier":
                     {
-                        dataGridView1.Columns["SupplierId"].Visible = true;
                         dataGridView1.Columns["SupplierName"].Visible = true;
-                        dataGridView1.Columns["SupplierId"].HeaderText = "#";
                         dataGridView1.Columns["SupplierName"].HeaderText = "Наименование";
                         break;
                     }
@@ -137,7 +143,6 @@ namespace Course
                         dataGridView1.Columns["OrderId"].Visible = true;
                         dataGridView1.Columns["OrderDate"].Visible = true;
                         dataGridView1.Columns["OrderStatus"].Visible = true;
-                        dataGridView1.Columns["OrderId"].HeaderText = "#";
                         dataGridView1.Columns["OrderDate"].HeaderText = "Дата заказа";
                         dataGridView1.Columns["OrderStatus"].HeaderText = "Статус";
                         SetFioColumn(1);
@@ -145,19 +150,15 @@ namespace Course
                     }
                 case "worker":
                     {
-                        dataGridView1.Columns["WorkerId"].Visible = true;
                         dataGridView1.Columns["WorkerPhone"].Visible = true;
-                        dataGridView1.Columns["WorkerId"].HeaderText = "#";
                         dataGridView1.Columns["WorkerPhone"].HeaderText = "Телефон";
                         SetFioColumn(1);
                         break;
                     }
                 case "user":
                     {
-                        dataGridView1.Columns["UserId"].Visible = true;
                         dataGridView1.Columns["UserLogin"].Visible = true;
                         dataGridView1.Columns["RoleName"].Visible = true;
-                        dataGridView1.Columns["UserId"].HeaderText = "#";
                         dataGridView1.Columns["UserLogin"].HeaderText = "Логин";
                         dataGridView1.Columns["RoleName"].HeaderText = "Роль";
                         SetFioColumn(1);
@@ -165,24 +166,35 @@ namespace Course
                     }
                 case "product":
                     {
-                        dataGridView1.Columns["ProductId"].Visible = true;
                         dataGridView1.Columns["ProductName"].Visible = true;
                         dataGridView1.Columns["ProductQuantity"].Visible = true;
                         dataGridView1.Columns["CategoryName"].Visible = true;
                         dataGridView1.Columns["SupplierName"].Visible = true;
-                        dataGridView1.Columns["ProductId"].HeaderText = "#";
+                        dataGridView1.Columns["ProductExpirationDate"].Visible = true;
                         dataGridView1.Columns["ProductName"].HeaderText = "Наименование";
                         dataGridView1.Columns["ProductQuantity"].HeaderText = "Кол-во";
                         dataGridView1.Columns["CategoryName"].HeaderText = "Категория";
                         dataGridView1.Columns["SupplierName"].HeaderText = "Поставщик";
+                        dataGridView1.Columns["ProductExpirationDate"].HeaderText = "Годен до";
                         SetImageColumn(1);
                         SetTotalCostColumn(5);
+                        MarkExpiredProducts();
                         break;
                     }
             }
 
         }
-
+        private void MarkExpiredProducts()
+        {
+            for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            {
+                if (DateTime.Parse(dataGridView1["ProductExpirationDate", i].Value.ToString()).Date < DateTime.Now.Date)
+                {
+                    dataGridView1["ProductExpirationDate", i].Style.BackColor = Color.LightCoral;
+                    dataGridView1["ProductExpirationDate", i].Style.ForeColor = Color.Firebrick;
+                }
+            }
+        }
         private void SetFioColumn(int columnIndex)
         {
             DataGridViewTextBoxColumn col = new DataGridViewTextBoxColumn();
@@ -328,6 +340,7 @@ namespace Course
         {
             if (textBox1.Text.Length >= 2 || textBox1.Text == "")
             {
+                GetTotalPages();
                 FillDGVData();
             }
         }
@@ -365,6 +378,7 @@ namespace Course
         {
             if (comboBox2.SelectedIndex >= 0)
             {
+                GetTotalPages();
                 FillDGVData();
             }
         }
@@ -554,6 +568,56 @@ namespace Course
                 button5.Text == "↓" ? "desc" : "asc"),
                 f.dateTimePicker1.Value.Date,
                 f.dateTimePicker2.Value.Date);
+        }
+
+        private void linkLabel_Click(object sender, EventArgs e)
+        {
+            foreach (var ctrl in flowLayoutPanel1.Controls)
+            {
+                if (ctrl is LinkLabel)
+                {
+                    (ctrl as LinkLabel).LinkBehavior = LinkBehavior.AlwaysUnderline;
+                    (ctrl as LinkLabel).LinkColor = Color.Chocolate;
+                }
+            }
+            var ll = (sender as LinkLabel);
+            ll.LinkBehavior = LinkBehavior.NeverUnderline;
+            ll.LinkColor = Color.Sienna;
+            page = Convert.ToInt32(ll.Text);
+            FillDGVData();
+        }
+        private void GetTotalPages()
+        {
+            var entries = Connection.SelectTableLength(tableName,
+                textBox1.Text,
+                comboBox2.SelectedIndex > 0 ? comboBox2.SelectedValue.ToString() : "",
+                comboBox1.SelectedIndex > 0 ? comboBox1.SelectedValue.ToString() : "",
+                button5.Text == "↓" ? "desc" : "asc");
+            totalPages = entries / 20 + ((entries % 20 == 0 && entries != 0) ? 0 : 1);
+            page = 1;
+            label1.Text = $"Всего записей: {entries}";
+            InsertPages();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (page == 1)
+            {
+                return;
+            }
+            page--;
+            InsertPages();
+            FillDGVData();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            panel3.Visible = false;
+        }
+
+        private void условноеФорматированиеToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            panel3.Visible = true;
         }
     }
 }

@@ -456,7 +456,7 @@ namespace Course
             }
             if (page != -1)
             {
-                cmdText += $" limit {(page - 1) * 20}, {page * 20}";
+                cmdText += $" limit {(page - 1) * 20}, 20";
             }
             try
             {
@@ -480,7 +480,7 @@ namespace Course
                     string sort = "",
                     string sortMode = "asc")
         {
-            var cmdText = $"select count() from `{tableName}`";
+            var cmdText = $"select count(*) from `{tableName}`";
             //joining fk-s
             switch (tableName)
             {
@@ -591,8 +591,9 @@ namespace Course
                 Connection.Close();
                 return totalPages;
             }
-            catch
+            catch (Exception ex)
             {
+                Connection.Close();
                 return 1;
             }
         }
