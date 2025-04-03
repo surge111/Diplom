@@ -454,6 +454,10 @@ namespace Course
             {
                 cmdText += " order by UserId";
             }
+            if (page != -1)
+            {
+                cmdText += $" limit {(page - 1) * 20}, {page * 20}";
+            }
             try
             {
                 Connection.Open();
@@ -469,6 +473,128 @@ namespace Course
             var dt = new DataTable();
             da.Fill(dt);
             return dt;
+        }
+        static public int SelectTableLength(string tableName,
+                    string search = "",
+                    string filter = "",
+                    string sort = "",
+                    string sortMode = "asc")
+        {
+            var cmdText = $"select count() from `{tableName}`";
+            //joining fk-s
+            switch (tableName)
+            {
+                case "order":
+                    {
+                        cmdText += "inner join worker " +
+                            "on WorkerId=OrderWorkerId";
+                        break;
+                    }
+                case "orderitem":
+                    {
+                        cmdText += " inner join `order` " +
+                            "inner join `product` " +
+                            "inner join `worker` " +
+                            "on OrderId=OrderItemOrderId " +
+                            "and ProductId=OrderItemProductId " +
+                            "and OrderWorkerId=WorkerId";
+                        break;
+                    }
+                case "product":
+                    {
+                        cmdText += " inner join category " +
+                            "inner join supplier " +
+                            "on ProductCategoryId=CategoryId " +
+                            "and ProductSupplierId=SupplierId";
+                        break;
+                    }
+                case "user":
+                    {
+                        cmdText += " inner join worker " +
+                            "inner join role " +
+                            "on WorkerId=UserWorkerId " +
+                            "and RoleId=UserRoleId";
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            }
+            if (search != "")
+            {
+                cmdText += " where";
+                //get search column
+                switch (tableName)
+                {
+                    case "user":
+                        {
+                            cmdText += " UserLogin";
+                            break;
+                        }
+                    case "worker":
+                        {
+                            cmdText += " WorkerSurname";
+                            break;
+                        }
+                    default:
+                        {
+                            cmdText += $" {tableName[0].ToString().ToUpper() + tableName.Substring(1)}Name";
+                            break;
+                        }
+                }
+                cmdText += $" like \"%{search}%\"";
+            }
+            if (filter != "")
+            {
+                cmdText += search != "" ? " and" : " where";
+                cmdText += Connection.GetFilter(filter);
+            }
+            if (sort != "")
+            {
+                cmdText += " order by";
+                switch (sort)
+                {
+                    case "Названию":
+                        {
+                            cmdText += " ProductName";
+                            break;
+                        }
+                    case "Стоимости":
+                        {
+                            cmdText += " ProductCost";
+                            break;
+                        }
+                }
+                cmdText += " " + sortMode;
+            }
+            else if (tableName == "product")
+            {
+                cmdText += " order by ProductId";
+            }
+            else if (tableName == "user")
+            {
+                cmdText += " order by UserId";
+            }
+            try
+            {
+                Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            var cmd = new MySqlCommand(cmdText, conn);
+            try
+            {
+                int totalPages = Convert.ToInt32(cmd.ExecuteScalar().ToString());
+                Connection.Close();
+                return totalPages;
+            }
+            catch
+            {
+                return 1;
+            }
         }
         static private string GetFilter(string condition)
         {

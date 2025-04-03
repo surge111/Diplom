@@ -17,6 +17,7 @@ namespace Course
 {
     public partial class ListForm : Form
     {
+        private int page = 1;
         private int totalPages = 1;
         private string tableName;
         private string orderId = null;
@@ -106,7 +107,8 @@ namespace Course
                 textBox1.Text, 
                 comboBox2.SelectedIndex > 0 ? comboBox2.SelectedValue.ToString():"",
                 comboBox1.SelectedIndex > 0 ? comboBox1.SelectedValue.ToString():"", 
-                button5.Text == "↓"?"desc":"asc");
+                button5.Text == "↓"?"desc":"asc", 
+                page);
             for (var i = 0; i < dataGridView1.Columns.Count; i++)
             {
                 dataGridView1.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
