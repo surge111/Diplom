@@ -17,6 +17,7 @@ namespace Course
 {
     public partial class ListForm : Form
     {
+        private int totalPages = 1;
         private string tableName;
         private string orderId = null;
         private bool fillingOrder = false;
@@ -56,6 +57,28 @@ namespace Course
             }
             FillCombos();
             FillDGVData();
+            InsertPages();
+        }
+        private void InsertPages()
+        {
+            var btn = button2;
+            var linkLable = new LinkLabel();
+            linkLable.AutoSize = true;
+            linkLable.LinkColor = System.Drawing.Color.Chocolate;
+            linkLable.Location = new System.Drawing.Point(41, 8);
+            linkLable.Margin = new System.Windows.Forms.Padding(5, 8, 5, 0);
+            linkLable.Size = new System.Drawing.Size(14, 18);
+            linkLable.TabIndex = 4;
+            linkLable.TabStop = true;
+            linkLable.Text = "1";
+            linkLable.VisitedLinkColor = System.Drawing.Color.Sienna;
+            flowLayoutPanel1.Controls.Remove(btn);
+            for (int i = 1; i <= totalPages; i++)
+            {
+                linkLable.Text = i.ToString();
+                flowLayoutPanel1.Controls.Add(linkLabel1);
+            }
+            flowLayoutPanel1.Controls.Add(btn);
         }
         private void FillCombos()
         {
