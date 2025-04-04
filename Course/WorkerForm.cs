@@ -144,7 +144,17 @@ namespace Course
                 {
                     return;
                 }
-                if (Connection.UpdateObject("worker", worker))
+                bool updated;
+                try
+                {
+                    updated = Connection.UpdateObject("worker", worker);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                if (updated)
                 {
                     MessageBox.Show("Запись редактирована", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                     this.DialogResult = DialogResult.OK;
@@ -162,7 +172,17 @@ namespace Course
                 {
                     return;
                 }
-                if (Connection.InsertObject("worker", worker))
+                bool inserted;
+                try
+                {
+                    inserted = Connection.InsertObject("worker", worker);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                if (inserted)
                 {
                     MessageBox.Show("Запись добавлена", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                     this.DialogResult = DialogResult.OK;

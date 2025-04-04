@@ -70,7 +70,21 @@ namespace Course
             for (int i = 0; i < table.Rows.Count; i++)
             {
                 var id = table.Rows[i].ItemArray[table.Columns["ProductId"].Ordinal].ToString();
-                var revenue = Connection.GetProductRevenue(id, dateFrom, dateTo);
+                string revenue;
+                try
+                {
+                    revenue = Connection.GetProductRevenue(id, dateFrom, dateTo);
+                }
+                catch (Exception ex)
+                {
+                    ReleaseObject(worksheet);
+                    ReleaseObject(worksheets);
+                    ReleaseObject(workbook);
+                    ReleaseObject(workbooks);
+                    excelApp.Quit();
+                    ReleaseObject(excelApp);
+                    throw ex;
+                }
                 worksheet.Cells[i + 3, "A"] = id;
                 worksheet.Cells[i + 3, "B"] = table.Rows[i].ItemArray[table.Columns["ProductName"].Ordinal].ToString();
                 worksheet.Cells[i + 3, "C"] = revenue;
@@ -101,7 +115,21 @@ namespace Course
             worksheet.Cells[6, "A"] = "КАССИР";
             worksheet.Cells[6, "B"] = orderWorker;
             worksheet.Cells[7, "B"] = orderDate.ToString("dd.MM.yyyy");
-            var table = Connection.GetOrderItemsForReport(orderId);
+            DataTable table;
+            try
+            {
+                table = Connection.GetOrderItemsForReport(orderId);
+            }
+            catch (Exception ex)
+            {
+                ReleaseObject(worksheet);
+                ReleaseObject(worksheets);
+                ReleaseObject(workbook);
+                ReleaseObject(workbooks);
+                excelApp.Quit();
+                ReleaseObject(excelApp);
+                throw ex;
+            }
             for (int i = 0; i < table.Rows.Count; i++)
             {
                 var quantity = table.Rows[i].ItemArray[table.Columns["OrderItemQuantity"].Ordinal].ToString();
@@ -112,7 +140,20 @@ namespace Course
             }
             var row = table.Rows.Count * 2 + 8;
             worksheet.Cells[row, "A"] = "ИТОГО:";
-            worksheet.Cells[row, "B"] = Connection.GetOrderTotalCost(orderId) + "р";
+            try
+            {
+                worksheet.Cells[row, "B"] = Connection.GetOrderTotalCost(orderId) + "р";
+            }
+            catch (Exception ex)
+            {
+                ReleaseObject(worksheet);
+                ReleaseObject(worksheets);
+                ReleaseObject(workbook);
+                ReleaseObject(workbooks);
+                excelApp.Quit();
+                ReleaseObject(excelApp);
+                throw ex;
+            }
             row++;
             worksheet.Cells[row, "A"] = "Сайт ФНС:";
             worksheet.Cells[row, "B"] = "www.nalog.ru";

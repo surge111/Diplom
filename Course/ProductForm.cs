@@ -31,8 +31,16 @@ namespace Course
             textBox4.Text = product["ProductCost"];
             textBox5.Text = product["ProductDiscount"];
             dateTimePicker1.Value = DateTime.Parse(product["ProductExpirationDate"]);
-            comboBox1.SelectedItem = Connection.GetCategoryById(product["ProductCategoryId"]);
-            comboBox2.SelectedItem = Connection.GetSupplierById(product["ProductSupplierId"]);
+            try
+            {
+                comboBox1.SelectedItem = Connection.GetCategoryById(product["ProductCategoryId"]);
+                comboBox2.SelectedItem = Connection.GetSupplierById(product["ProductSupplierId"]);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\SetupInstaller\\Resources\\ProductImages\\");
             try
             {
@@ -47,8 +55,16 @@ namespace Course
         }
         private void FillCombos()
         {
-            comboBox1.DataSource = Connection.GetCategories();
-            comboBox2.DataSource = Connection.GetSuppliers();
+            try
+            {
+                comboBox1.DataSource = Connection.GetCategories();
+                comboBox2.DataSource = Connection.GetSuppliers();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
         }
         private void SwitchButton()
         {
@@ -269,8 +285,17 @@ namespace Course
             product["ProductCost"] = textBox4.Text;
             product["ProductDiscount"] = textBox5.Text;
             product["ProductExpirationDate"] = dateTimePicker1.Value.ToString("yyyy-MM-dd");
-            product["ProductCategoryId"] = Connection.GetCategoryId(comboBox1.SelectedItem.ToString());
-            product["ProductSupplierId"] = Connection.GetSupplierId(comboBox2.SelectedItem.ToString());
+            try
+            {
+                product["ProductCategoryId"] = Connection.GetCategoryId(comboBox1.SelectedItem.ToString());
+                product["ProductSupplierId"] = Connection.GetSupplierId(comboBox2.SelectedItem.ToString());
+            }
+            catch (Exception ex)
+            {
+                product = null;
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             product["ProductImage"] = imagePath;
             if (productSelected)
             {
@@ -279,7 +304,17 @@ namespace Course
                 {
                     return;
                 }
-                if (Connection.UpdateObject("product", product))
+                bool updated;
+                try
+                {
+                    updated = Connection.UpdateObject("product", product);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                if (updated)
                 {
                     MessageBox.Show("Запись редактирована", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                     this.DialogResult = DialogResult.OK;
@@ -297,7 +332,17 @@ namespace Course
                 {
                     return;
                 }
-                if (Connection.InsertObject("product", product))
+                bool inserted;
+                try
+                {
+                    inserted = Connection.InsertObject("product", product);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                if (inserted)
                 {
                     MessageBox.Show("Запись добавлена", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                     this.DialogResult = DialogResult.OK;

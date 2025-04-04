@@ -29,13 +29,13 @@ namespace Course
             config.AppSettings.Settings["user"].Value = textBox2.Text;
             config.AppSettings.Settings["pwd"].Value = textBox3.Text;
             config.Save(ConfigurationSaveMode.Minimal);
-            Connection.Update();
+            Connection.Update(config.AppSettings.Settings["host"].Value, config.AppSettings.Settings["user"].Value, config.AppSettings.Settings["pwd"].Value);
             if (Connection.Test())
             {
                 MessageBox.Show("Подключение установлено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 try
                 {
-                    Connection.ChangeDb();
+                    Connection.ChangeDb(config.AppSettings.Settings["db"].Value);
                 }
                 catch
                 {

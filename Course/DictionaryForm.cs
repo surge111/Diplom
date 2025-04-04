@@ -67,7 +67,17 @@ namespace Course
                 {
                     return;
                 }
-                if (Connection.UpdateObject(tableName, entity))
+                bool updated;
+                try
+                {
+                    updated = Connection.UpdateObject(tableName, entity);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                if (updated)
                 {
                     MessageBox.Show("Запись редактирована", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                     this.DialogResult = DialogResult.OK;
@@ -85,7 +95,17 @@ namespace Course
                 {
                     return;
                 }
-                if (Connection.InsertObject(tableName, entity))
+                bool inserted;
+                try
+                {
+                    inserted = Connection.InsertObject(tableName, entity);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                if (inserted)
                 {
                     MessageBox.Show("Запись добавлена", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                     this.DialogResult = DialogResult.OK;

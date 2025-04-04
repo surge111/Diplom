@@ -95,30 +95,48 @@ namespace Course
         {
             if (panel2.Visible)
             {
-                var categories = Connection.GetCategories();
+                comboBox1.DataSource = new string[] { "Не сортировать", "Названию", "Стоимости" };
+                comboBox1.SelectedIndex = 0;
+                string[] categories;
+                string[] suppliers;
+                try
+                {
+                    categories = Connection.GetCategories();
+                    suppliers = Connection.GetSuppliers();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 for (var i = 0; i < categories.Length; i++)
                 {
                     categories[i] = "Категория: " + categories[i];
                 }
-                var suppliers = Connection.GetSuppliers();
                 for (var i = 0; i < suppliers.Length; i++)
                 {
                     suppliers[i] = "Поставщик: " + suppliers[i];
                 }
                 comboBox2.DataSource = new string[] { "Не фильтровать" }.Concat(categories.Concat(suppliers).ToArray()).ToArray();
-                comboBox1.DataSource = new string[] { "Не сортировать", "Названию", "Стоимости" };
                 comboBox2.SelectedIndex = 0;
-                comboBox1.SelectedIndex = 0;
             }
         }
         private void FillDGVData()
         {
-            dataGridView1.DataSource = Connection.SelectTable(tableName, 
-                textBox1.Text, 
-                comboBox2.SelectedIndex > 0 ? comboBox2.SelectedValue.ToString():"",
-                comboBox1.SelectedIndex > 0 ? comboBox1.SelectedValue.ToString():"", 
-                button5.Text == "↓"?"desc":"asc", 
-                page);
+            try
+            {
+                dataGridView1.DataSource = Connection.SelectTable(tableName,
+                    textBox1.Text,
+                    comboBox2.SelectedIndex > 0 ? comboBox2.SelectedValue.ToString() : "",
+                    comboBox1.SelectedIndex > 0 ? comboBox1.SelectedValue.ToString() : "",
+                    button5.Text == "↓" ? "desc" : "asc",
+                    page);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             for (var i = 0; i < dataGridView1.Columns.Count; i++)
             {
                 dataGridView1.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -150,9 +168,8 @@ namespace Course
                     }
                 case "worker":
                     {
-                        dataGridView1.Columns["WorkerPhone"].Visible = true;
-                        dataGridView1.Columns["WorkerPhone"].HeaderText = "Телефон";
-                        SetFioColumn(1);
+                        SetFioColumn(0);
+                        SetHiddenPhoneColumn(1);
                         break;
                     }
                 case "user":
@@ -193,6 +210,25 @@ namespace Course
                     dataGridView1["ProductExpirationDate", i].Style.BackColor = Color.LightCoral;
                     dataGridView1["ProductExpirationDate", i].Style.ForeColor = Color.Firebrick;
                 }
+            }
+        }
+        private void SetHiddenPhoneColumn(int columnIndex)
+        {
+            DataGridViewTextBoxColumn col = new DataGridViewTextBoxColumn();
+            col.Name = "HiddenPhone";
+            col.HeaderText = "Телефон";
+            try
+            {
+                dataGridView1.Columns.Remove("HiddenPhone");
+            }
+            catch
+            {
+                ;
+            }
+            dataGridView1.Columns.Insert(columnIndex, col);
+            for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            {
+                dataGridView1[columnIndex, i].Value = $"{dataGridView1["WorkerPhone", i].Value.ToString().Substring(0, 4) + "***" + dataGridView1["WorkerPhone", i].Value.ToString().Substring(7)}";
             }
         }
         private void SetFioColumn(int columnIndex)
@@ -509,11 +545,19 @@ namespace Course
         
         private void button3_Click(object sender, EventArgs e)
         {
-            ReportBuilder.ProductQuantityReport(Connection.SelectTable(tableName,
-                textBox1.Text,
-                comboBox2.SelectedIndex > 0 ? comboBox2.SelectedValue.ToString() : "",
-                comboBox1.SelectedIndex > 0 ? comboBox1.SelectedValue.ToString() : "",
-                button5.Text == "↓" ? "desc" : "asc"));
+            try
+            {
+                ReportBuilder.ProductQuantityReport(Connection.SelectTable(tableName,
+                    textBox1.Text,
+                    comboBox2.SelectedIndex > 0 ? comboBox2.SelectedValue.ToString() : "",
+                    comboBox1.SelectedIndex > 0 ? comboBox1.SelectedValue.ToString() : "",
+                    button5.Text == "↓" ? "desc" : "asc"));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
         }
 
         private void button6_Click(object sender, EventArgs e)
@@ -538,7 +582,15 @@ namespace Course
                 order.Add("OrderWorkerId", User.WorkerId);
                 order.Add("OrderDate", DateTime.Now.Date.ToString("yyyy-MM-dd"));
                 order.Add("OrderStatus", "Новый");
-                Connection.InsertObject("order", order);
+                try
+                {
+                    Connection.InsertObject("order", order);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 this.orderId = Connection.GetLastOrderId();
             }
             if (!this.fillingOrder)
@@ -561,13 +613,21 @@ namespace Course
             {
                 return;
             }
-            ReportBuilder.ProductRevenueReport(Connection.SelectTable(tableName,
-                textBox1.Text,
-                comboBox2.SelectedIndex > 0 ? comboBox2.SelectedValue.ToString() : "",
-                comboBox1.SelectedIndex > 0 ? comboBox1.SelectedValue.ToString() : "",
-                button5.Text == "↓" ? "desc" : "asc"),
-                f.dateTimePicker1.Value.Date,
-                f.dateTimePicker2.Value.Date);
+            try
+            {
+                ReportBuilder.ProductRevenueReport(Connection.SelectTable(tableName,
+                    textBox1.Text,
+                    comboBox2.SelectedIndex > 0 ? comboBox2.SelectedValue.ToString() : "",
+                    comboBox1.SelectedIndex > 0 ? comboBox1.SelectedValue.ToString() : "",
+                    button5.Text == "↓" ? "desc" : "asc"),
+                    f.dateTimePicker1.Value.Date,
+                    f.dateTimePicker2.Value.Date);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
         }
 
         private void linkLabel_Click(object sender, EventArgs e)
@@ -588,11 +648,20 @@ namespace Course
         }
         private void GetTotalPages()
         {
-            var entries = Connection.SelectTableLength(tableName,
-                textBox1.Text,
-                comboBox2.SelectedIndex > 0 ? comboBox2.SelectedValue.ToString() : "",
-                comboBox1.SelectedIndex > 0 ? comboBox1.SelectedValue.ToString() : "",
-                button5.Text == "↓" ? "desc" : "asc");
+            int entries;
+            try
+            {
+                entries = Connection.SelectTableLength(tableName,
+                    textBox1.Text,
+                    comboBox2.SelectedIndex > 0 ? comboBox2.SelectedValue.ToString() : "",
+                    comboBox1.SelectedIndex > 0 ? comboBox1.SelectedValue.ToString() : "",
+                    button5.Text == "↓" ? "desc" : "asc");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             totalPages = entries / 20 + ((entries % 20 == 0 && entries != 0) ? 0 : 1);
             page = 1;
             label1.Text = $"Всего записей: {entries}";

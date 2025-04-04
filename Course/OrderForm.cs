@@ -26,7 +26,15 @@ namespace Course
             order.Add("OrderWorkerId", comboBox2.SelectedValue.ToString());
             order.Add("OrderDate", dateTimePicker1.Value.ToString("yyyy-MM-dd"));
             order.Add("OrderStatus", "Новый");
-            Connection.InsertObject("order", order);
+            try
+            {
+                Connection.InsertObject("order", order);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
         }
         public OrderForm(string orderId)
         {
@@ -53,7 +61,15 @@ namespace Course
             comboBox2.DisplayMember = "Value";
             comboBox2.ValueMember = "Key";
             FillCombos();
-            comboBox2.SelectedValue = order["OrderWorkerId"];
+            try
+            {
+                comboBox2.SelectedValue = order["OrderWorkerId"];
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             dateTimePicker1.Value = DateTime.Parse(order["OrderDate"]).Date;
             if (order["OrderStatus"] == "Проведён")
             {
@@ -67,7 +83,15 @@ namespace Course
         }
         private void FillCombos()
         {
-            comboBox2.DataSource = Connection.GetWorkers();
+            try
+            {
+                comboBox2.DataSource = Connection.GetWorkers();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
         }
         private void FillDGV()
         {
@@ -128,7 +152,17 @@ namespace Course
                         order["OrderWorkerId"] = comboBox2.SelectedValue.ToString();
                         order["OrderDate"] = dateTimePicker1.Value.Date.ToString("yyyy-MM-dd");
                         order["OrderStatus"] = "Проведён";
-                        if (Connection.ConfirmOrder(order))
+                        bool confirmed;
+                        try
+                        {
+                            confirmed = Connection.ConfirmOrder(order);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                        if (confirmed)
                         {
                             button1.Text = "Сформировать чек";
                             dataGridView1.ContextMenuStrip = null;

@@ -47,12 +47,12 @@ namespace Course
             // 
             // textBoxUnderline1
             // 
-            this.textBoxUnderline1.BackColor = System.Drawing.Color.DarkRed;
+            this.textBoxUnderline1.BackColor = System.Drawing.Color.DarkGoldenrod;
             this.textBoxUnderline1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.textBoxUnderline1.Location = new System.Drawing.Point(0, 23);
+            this.textBoxUnderline1.Location = new System.Drawing.Point(0, 24);
             this.textBoxUnderline1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.textBoxUnderline1.Name = "textBoxUnderline1";
-            this.textBoxUnderline1.Size = new System.Drawing.Size(313, 3);
+            this.textBoxUnderline1.Size = new System.Drawing.Size(313, 2);
             this.textBoxUnderline1.TabIndex = 0;
             // 
             // label1
@@ -83,12 +83,12 @@ namespace Course
             // 
             // label2
             // 
-            this.label2.BackColor = System.Drawing.Color.DarkRed;
+            this.label2.BackColor = System.Drawing.Color.DarkGoldenrod;
             this.label2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label2.Location = new System.Drawing.Point(0, 23);
+            this.label2.Location = new System.Drawing.Point(0, 24);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(313, 3);
+            this.label2.Size = new System.Drawing.Size(313, 2);
             this.label2.TabIndex = 0;
             // 
             // label3
@@ -119,12 +119,12 @@ namespace Course
             // 
             // label4
             // 
-            this.label4.BackColor = System.Drawing.Color.DarkRed;
+            this.label4.BackColor = System.Drawing.Color.DarkGoldenrod;
             this.label4.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label4.Location = new System.Drawing.Point(0, 23);
+            this.label4.Location = new System.Drawing.Point(0, 24);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(313, 3);
+            this.label4.Size = new System.Drawing.Size(313, 2);
             this.label4.TabIndex = 0;
             // 
             // label5

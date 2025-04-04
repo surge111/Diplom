@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `db35` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `db35`;
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: db35
@@ -46,26 +44,7 @@ CREATE TABLE `order` (
   PRIMARY KEY (`OrderId`),
   KEY `OrderFK1_idx` (`OrderWorkerId`),
   CONSTRAINT `OrderFK1` FOREIGN KEY (`OrderWorkerId`) REFERENCES `worker` (`WorkerId`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `orderitem`
---
-
-DROP TABLE IF EXISTS `orderitem`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `orderitem` (
-  `OrderItemOrderId` int NOT NULL,
-  `OrderItemProductId` int NOT NULL,
-  `OrderItemQuantity` int NOT NULL,
-  `OrderItemCost` float NOT NULL,
-  PRIMARY KEY (`OrderItemOrderId`,`OrderItemProductId`),
-  KEY `OrderItemFK2_idx` (`OrderItemProductId`),
-  CONSTRAINT `OrderItemFK1` FOREIGN KEY (`OrderItemOrderId`) REFERENCES `order` (`OrderId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `OrderItemFK2` FOREIGN KEY (`OrderItemProductId`) REFERENCES `product` (`ProductId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -91,6 +70,25 @@ CREATE TABLE `product` (
   CONSTRAINT `ProductFK1` FOREIGN KEY (`ProductCategoryId`) REFERENCES `category` (`CategoryId`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `ProductFK2` FOREIGN KEY (`ProductSupplierId`) REFERENCES `supplier` (`SupplierId`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `orderitem`
+--
+
+DROP TABLE IF EXISTS `orderitem`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `orderitem` (
+  `OrderItemOrderId` int NOT NULL,
+  `OrderItemProductId` int NOT NULL,
+  `OrderItemQuantity` int NOT NULL,
+  `OrderItemCost` float NOT NULL,
+  PRIMARY KEY (`OrderItemOrderId`,`OrderItemProductId`),
+  KEY `OrderItemFK2_idx` (`OrderItemProductId`),
+  CONSTRAINT `OrderItemFK1` FOREIGN KEY (`OrderItemOrderId`) REFERENCES `order` (`OrderId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `OrderItemFK2` FOREIGN KEY (`OrderItemProductId`) REFERENCES `product` (`ProductId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -168,4 +166,4 @@ CREATE TABLE `worker` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-01 12:07:53
+-- Dump completed on 2025-04-04 11:43:41

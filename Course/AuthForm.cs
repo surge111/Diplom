@@ -62,14 +62,24 @@ namespace Course
             }
             try
             {
-                Connection.ChangeDb();
+                Configuration config = ConfigurationManager.OpenExeConfiguration(Application.ExecutablePath);
+                Connection.ChangeDb(config.AppSettings.Settings["db"].Value);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            var userData = Connection.GetUser(textBox1.Text, textBox2.Text);
+            DataTable userData;
+            try
+            {
+                userData = Connection.GetUser(textBox1.Text, textBox2.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             if (userData.Rows.Count == 1 || (textBox3.Visible && textBox3.Text != captcha))
             {
                 var role = userData.Rows[0].ItemArray[userData.Columns["RoleName"].Ordinal].ToString();

@@ -28,8 +28,16 @@ namespace Course
             comboBox1.ValueMember = "Key";
             FillCombos();
             textBox2.Text = user["UserLogin"];
-            comboBox1.SelectedValue = user["UserWorkerId"];
-            comboBox2.SelectedItem = Connection.GetRoleById(user["UserRoleId"]);
+            try
+            {
+                comboBox1.SelectedValue = user["UserWorkerId"];
+                comboBox2.SelectedItem = Connection.GetRoleById(user["UserRoleId"]);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             textBoxUnderline2.BackColor = Color.DarkGoldenrod;
             this.user = user;
         }
@@ -47,8 +55,16 @@ namespace Course
         }
         private void FillCombos()
         {
-            comboBox1.DataSource = Connection.GetWorkers();
-            comboBox2.DataSource = Connection.GetRoles();
+            try
+            {
+                comboBox1.DataSource = Connection.GetWorkers();
+                comboBox2.DataSource = Connection.GetRoles();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
         }
         private void SwitchButton()
         {
@@ -136,8 +152,17 @@ namespace Course
                 var password = BitConverter.ToString(a).Replace("-", string.Empty).ToLower();
                 user["UserPassword"] = password;
             }
-            user["UserRoleId"] = Connection.GetRoleId(comboBox2.SelectedValue.ToString());
-            user["UserWorkerId"] = ((KeyValuePair<string, string>)comboBox1.SelectedItem).Key;
+            try
+            {
+                user["UserRoleId"] = Connection.GetRoleId(comboBox2.SelectedValue.ToString());
+                user["UserWorkerId"] = ((KeyValuePair<string, string>)comboBox1.SelectedItem).Key;
+            }
+            catch (Exception ex)
+            {
+                user = null;
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             if (entitySelected)
             {
                 //update
@@ -145,7 +170,17 @@ namespace Course
                 {
                     return;
                 }
-                if (Connection.UpdateObject("user", user))
+                bool updated;
+                try
+                {
+                    updated = Connection.UpdateObject("user", user);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                if (updated)
                 {
                     MessageBox.Show("Запись редактирована", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                     this.DialogResult = DialogResult.OK;
@@ -163,7 +198,17 @@ namespace Course
                 {
                     return;
                 }
-                if (Connection.InsertObject("user", user))
+                bool inserted;
+                try
+                {
+                    inserted = Connection.InsertObject("user", user);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                if (inserted)
                 {
                     MessageBox.Show("Запись добавлена", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                     this.DialogResult = DialogResult.OK;
