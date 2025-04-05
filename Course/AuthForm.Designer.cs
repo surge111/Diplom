@@ -258,6 +258,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Пекарня \"Круглова\"";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AuthForm_FormClosing);
+            this.Load += new System.EventHandler(this.AuthForm_Load);
             this.textBox1.ResumeLayout(false);
             this.textBox2.ResumeLayout(false);
             this.textBox3.ResumeLayout(false);

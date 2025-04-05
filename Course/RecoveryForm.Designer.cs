@@ -29,12 +29,14 @@ namespace Course
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RecoveryForm));
             this.button1 = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.comboBoxUnderline2 = new System.Windows.Forms.Label();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.button2 = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.comboBox2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -105,6 +107,11 @@ namespace Course
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // timer1
+            // 
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // RecoveryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
@@ -120,7 +127,10 @@ namespace Course
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "RecoveryForm";
             this.Text = "Пекарня \"Круглова\"";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RecoveryForm_FormClosing);
             this.Load += new System.EventHandler(this.RecoveryForm_Load);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.RecoveryForm_KeyPress);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RecoveryForm_MouseMove);
             this.comboBox2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -134,5 +144,6 @@ namespace Course
         private System.Windows.Forms.Label comboBoxUnderline2;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Timer timer1;
     }
 }

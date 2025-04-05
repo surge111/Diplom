@@ -245,5 +245,17 @@ namespace Course
             label4.BackColor = textBox3.Text.Length == 4 ? Color.DarkGreen : Color.DarkRed;
             SwitchButton();
         }
+
+        private void AuthForm_Load(object sender, EventArgs e)
+        {
+            var forms = Application.OpenForms;
+            for (int i = 0; i < forms.Count; i++)
+            {
+                if (!(forms[i] == this))
+                {
+                    forms[i].Close();
+                }
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.IO;
@@ -16,11 +17,13 @@ namespace Course
         public RecoveryForm()
         {
             InitializeComponent();
+            
         }
 
         private void RecoveryForm_Load(object sender, EventArgs e)
         {
             FillCombo();
+            timer1.Start();
         }
         private void FillCombo()
         {
@@ -111,6 +114,32 @@ namespace Course
                 e.Graphics.DrawString(comboBox2.Items[e.Index].ToString(), e.Font, brush, e.Bounds);
                 e.DrawFocusRectangle();
             }
+        }
+        private int time = Convert.ToInt32(ConfigurationManager.OpenExeConfiguration(Application.ExecutablePath).AppSettings.Settings["time"].Value);
+        private int timer = 0;
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            timer++;
+            if (timer >= time)
+            {
+                var f = new AuthForm();
+                f.Show();
+            }
+        }
+
+        private void RecoveryForm_MouseMove(object sender, MouseEventArgs e)
+        {
+            timer = 0;
+        }
+
+        private void RecoveryForm_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            timer = 0;
+        }
+
+        private void RecoveryForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            timer1.Stop();
         }
     }
 }
