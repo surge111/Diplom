@@ -129,7 +129,9 @@ namespace Course
             this.Text = "Пекарня \"Круглова\"";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RecoveryForm_FormClosing);
             this.Load += new System.EventHandler(this.RecoveryForm_Load);
+            this.Scroll += new System.Windows.Forms.ScrollEventHandler(this.RecoveryForm_Scroll);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.RecoveryForm_KeyPress);
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.RecoveryForm_MouseClick);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RecoveryForm_MouseMove);
             this.comboBox2.ResumeLayout(false);
             this.ResumeLayout(false);

@@ -17,7 +17,16 @@ namespace Course
         public RecoveryForm()
         {
             InitializeComponent();
-            
+            foreach (var c in this.Controls)
+            {
+                ((Control)c).KeyPress += new KeyPressEventHandler(RecoveryForm_KeyPress);
+                ((Control)c).MouseMove += new MouseEventHandler(RecoveryForm_MouseMove);
+                ((Control)c).MouseClick += new MouseEventHandler(RecoveryForm_MouseClick);
+                if (c is ScrollableControl)
+                {
+                    ((ScrollableControl)c).Scroll += new ScrollEventHandler(RecoveryForm_Scroll);
+                }
+            }
         }
 
         private void RecoveryForm_Load(object sender, EventArgs e)
@@ -122,12 +131,27 @@ namespace Course
             timer++;
             if (timer >= time)
             {
-                var f = new AuthForm();
-                f.Show();
+                timer1.Stop();
+                foreach (var f in Application.OpenForms)
+                {
+                    if (f is AuthForm)
+                    {
+                        ((AuthForm)f).Visible = true;
+                    }
+                    else
+                    {
+                        ((Form)f).Close();
+                    }
+                }
             }
         }
 
         private void RecoveryForm_MouseMove(object sender, MouseEventArgs e)
+        {
+            timer = 0;
+        }
+
+        private void RecoveryForm_MouseClick(object sender, MouseEventArgs e)
         {
             timer = 0;
         }
@@ -140,6 +164,11 @@ namespace Course
         private void RecoveryForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             timer1.Stop();
+        }
+
+        private void RecoveryForm_Scroll(object sender, ScrollEventArgs e)
+        {
+            timer = 0;
         }
     }
 }

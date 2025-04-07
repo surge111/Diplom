@@ -29,6 +29,7 @@ namespace Course
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigForm));
             this.textBoxUnderline1 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -40,6 +41,7 @@ namespace Course
             this.label5 = new System.Windows.Forms.Label();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.textBox1.SuspendLayout();
             this.textBox2.SuspendLayout();
             this.textBox3.SuspendLayout();
@@ -166,6 +168,11 @@ namespace Course
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // timer1
+            // 
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // ConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
@@ -184,6 +191,11 @@ namespace Course
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ConfigForm";
             this.Text = "Настройки";
+            this.Load += new System.EventHandler(this.ConfigForm_Load);
+            this.Scroll += new System.Windows.Forms.ScrollEventHandler(this.ConfigForm_Scroll);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ConfigForm_KeyPress);
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ConfigForm_MouseClick);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ConfigForm_MouseMove);
             this.textBox1.ResumeLayout(false);
             this.textBox2.ResumeLayout(false);
             this.textBox3.ResumeLayout(false);
@@ -204,5 +216,6 @@ namespace Course
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Timer timer1;
     }
 }

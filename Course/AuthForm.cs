@@ -57,7 +57,14 @@ namespace Course
                 var f = new RecoveryForm();
                 this.Visible = false;
                 f.ShowDialog();
-                this.Visible = true;
+                try
+                {
+                    this.Visible = true;
+                }
+                catch
+                {
+                    ;
+                }
                 return;
             }
             try
@@ -93,16 +100,30 @@ namespace Course
                     var f = new ListForm("product");
                     this.Visible = false;
                     f.ShowDialog();
-                    ClearForm();
-                    this.Visible = true;
+                    try
+                    {
+                        ClearForm();
+                        this.Visible = true;
+                    }
+                    catch
+                    {
+                        ;
+                    }
                 }
                 else
                 {
                     var f = new MenuForm();
                     this.Visible = false;
                     f.ShowDialog();
-                    ClearForm();
-                    this.Visible = true;
+                    try
+                    {
+                        ClearForm();
+                        this.Visible = true;
+                    }
+                    catch
+                    {
+                        ;
+                    }
                 }
             }
             else
@@ -181,7 +202,7 @@ namespace Course
 
         private void AuthForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (MessageBox.Show("Выйти?", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk) != DialogResult.OK)
+            if (this.Visible && MessageBox.Show("Выйти?", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk) != DialogResult.OK)
             {
                 e.Cancel = true;
             }
