@@ -95,35 +95,17 @@ namespace Course
                 User.Role = role;
                 User.Id = id;
                 User.WorkerId = workerId;
-                if (User.Role == "Сотрудник")
+                var f = new MenuForm();
+                this.Visible = false;
+                f.ShowDialog();
+                try
                 {
-                    var f = new ListForm("product");
-                    this.Visible = false;
-                    f.ShowDialog();
-                    try
-                    {
-                        ClearForm();
-                        this.Visible = true;
-                    }
-                    catch
-                    {
-                        ;
-                    }
+                    ClearForm();
+                    this.Visible = true;
                 }
-                else
+                catch
                 {
-                    var f = new MenuForm();
-                    this.Visible = false;
-                    f.ShowDialog();
-                    try
-                    {
-                        ClearForm();
-                        this.Visible = true;
-                    }
-                    catch
-                    {
-                        ;
-                    }
+                    ;
                 }
             }
             else

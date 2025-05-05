@@ -191,9 +191,9 @@
             this.label1.Location = new System.Drawing.Point(300, 336);
             this.label1.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(26, 18);
+            this.label1.Size = new System.Drawing.Size(135, 18);
             this.label1.TabIndex = 3;
-            this.label1.Text = "len";
+            this.label1.Text = "Всего записей: [len]";
             // 
             // panel1
             // 
@@ -395,24 +395,24 @@
             // 
             // textBox2
             // 
-            this.textBox2.BackColor = System.Drawing.Color.LightCoral;
+            this.textBox2.BackColor = System.Drawing.Color.LightGreen;
             this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox2.ForeColor = System.Drawing.Color.Firebrick;
+            this.textBox2.ForeColor = System.Drawing.SystemColors.ControlText;
             this.textBox2.Location = new System.Drawing.Point(12, 12);
             this.textBox2.Name = "textBox2";
             this.textBox2.ReadOnly = true;
             this.textBox2.Size = new System.Drawing.Size(100, 26);
             this.textBox2.TabIndex = 6;
-            this.textBox2.Text = "Дата";
+            this.textBox2.Text = "Стоимость";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(118, 14);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(191, 18);
+            this.label4.Size = new System.Drawing.Size(199, 18);
             this.label4.TabIndex = 5;
-            this.label4.Text = "- срок годности товара истёк";
+            this.label4.Text = "- скидка на товар не менее 5%";
             // 
             // button7
             // 

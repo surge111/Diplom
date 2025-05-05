@@ -43,7 +43,15 @@ namespace Course
             }
             if (User.Role == "Менеджер")
             {
-                contextMenuStrip1.Items.Remove(contextMenuStrip1.Items["удалитьToolStripMenuItem"]);
+                if (tableName == "product")
+                {
+                    contextMenuStrip1.Items.Remove(contextMenuStrip1.Items["добавитьВЗаказToolStripMenuItem"]);
+                }
+            }
+            if (tableName == "order")
+            {
+                panel1.Visible = false;
+                contextMenuStrip1.Items.Remove(contextMenuStrip1.Items["добавитьToolStripMenuItem"]);
             }
             if (tableName != "product")
             {
@@ -51,11 +59,6 @@ namespace Course
                 flowLayoutPanel2.Visible = false;
                 contextMenuStrip1.Items.Remove(contextMenuStrip1.Items["добавитьВЗаказToolStripMenuItem"]);
                 menuStrip1.Visible = false;
-            }
-            if (tableName == "order")
-            {
-                panel1.Visible = false;
-                contextMenuStrip1.Items.Remove(contextMenuStrip1.Items["добавитьToolStripMenuItem"]);
             }
             FillCombos();
             GetTotalPages();
@@ -195,20 +198,19 @@ namespace Course
                         dataGridView1.Columns["ProductExpirationDate"].HeaderText = "Годен до";
                         SetImageColumn(1);
                         SetTotalCostColumn(5);
-                        MarkExpiredProducts();
+                        MarkProducts();
                         break;
                     }
             }
 
         }
-        private void MarkExpiredProducts()
+        private void MarkProducts()
         {
             for (int i = 0; i < dataGridView1.Rows.Count; i++)
             {
-                if (DateTime.Parse(dataGridView1["ProductExpirationDate", i].Value.ToString()).Date < DateTime.Now.Date)
+                if (DateTime.Parse(dataGridView1["ProductDiscount", i].Value.ToString()).Date < DateTime.Now.Date)
                 {
-                    dataGridView1["ProductExpirationDate", i].Style.BackColor = Color.LightCoral;
-                    dataGridView1["ProductExpirationDate", i].Style.ForeColor = Color.Firebrick;
+                    dataGridView1["TotalCost", i].Style.BackColor = Color.LightGreen;
                 }
             }
         }

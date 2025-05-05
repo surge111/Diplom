@@ -15,8 +15,28 @@ namespace Course
         public MenuForm()
         {
             InitializeComponent();
-            if (User.Role != "Администратор")
+            if (User.Role == "Администратор")
             {
+                button1.Visible = false;
+                button2.Visible = false;
+                button3.Visible = false;
+                button4.Visible = false;
+                button8.Visible = false;
+            }
+            else if (User.Role == "Менеджер")
+            {
+                button2.Visible = false;
+                button5.Visible = false;
+                button6.Visible = false;
+                button7.Visible = false;
+                button8.Visible = false;
+            }
+            else if (User.Role == "Сотрудник")
+            {
+                button3.Visible = false;
+                button4.Visible = false;
+                button5.Visible = false;
+                button6.Visible = false;
                 button7.Visible = false;
             }
         }
@@ -72,6 +92,14 @@ namespace Course
         private void button7_Click(object sender, EventArgs e)
         {
             var f = new RecoveryForm();
+            this.Visible = false;
+            f.ShowDialog();
+            this.Visible = true;
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            var f = new ListForm("client");
             this.Visible = false;
             f.ShowDialog();
             this.Visible = true;

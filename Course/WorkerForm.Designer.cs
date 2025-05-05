@@ -68,7 +68,7 @@ namespace Course
             this.textBox1.Location = new System.Drawing.Point(112, 7);
             this.textBox1.MaxLength = 30;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(257, 26);
+            this.textBox1.Size = new System.Drawing.Size(226, 26);
             this.textBox1.TabIndex = 2;
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
@@ -79,7 +79,7 @@ namespace Course
             this.textBoxUnderline1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.textBoxUnderline1.Location = new System.Drawing.Point(0, 24);
             this.textBoxUnderline1.Name = "textBoxUnderline1";
-            this.textBoxUnderline1.Size = new System.Drawing.Size(257, 2);
+            this.textBoxUnderline1.Size = new System.Drawing.Size(226, 2);
             this.textBoxUnderline1.TabIndex = 0;
             // 
             // label2
@@ -101,7 +101,7 @@ namespace Course
             this.textBox2.Location = new System.Drawing.Point(112, 39);
             this.textBox2.MaxLength = 30;
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(257, 26);
+            this.textBox2.Size = new System.Drawing.Size(226, 26);
             this.textBox2.TabIndex = 4;
             this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             this.textBox2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox2_KeyPress);
@@ -112,7 +112,7 @@ namespace Course
             this.label3.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.label3.Location = new System.Drawing.Point(0, 24);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(257, 2);
+            this.label3.Size = new System.Drawing.Size(226, 2);
             this.label3.TabIndex = 0;
             // 
             // label4
@@ -134,7 +134,7 @@ namespace Course
             this.textBox3.Location = new System.Drawing.Point(112, 71);
             this.textBox3.MaxLength = 30;
             this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(257, 26);
+            this.textBox3.Size = new System.Drawing.Size(226, 26);
             this.textBox3.TabIndex = 6;
             this.textBox3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox3_KeyPress);
             // 
@@ -144,18 +144,20 @@ namespace Course
             this.label5.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.label5.Location = new System.Drawing.Point(0, 24);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(257, 2);
+            this.label5.Size = new System.Drawing.Size(226, 2);
             this.label5.TabIndex = 0;
             // 
             // maskedTextBox1
             // 
+            this.maskedTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.maskedTextBox1.BackColor = System.Drawing.Color.PaleGoldenrod;
             this.maskedTextBox1.Controls.Add(this.label7);
             this.maskedTextBox1.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite;
             this.maskedTextBox1.Location = new System.Drawing.Point(112, 103);
             this.maskedTextBox1.Mask = "+7(000)-000-00-00";
             this.maskedTextBox1.Name = "maskedTextBox1";
-            this.maskedTextBox1.Size = new System.Drawing.Size(257, 26);
+            this.maskedTextBox1.Size = new System.Drawing.Size(226, 26);
             this.maskedTextBox1.TabIndex = 8;
             this.maskedTextBox1.TextChanged += new System.EventHandler(this.maskedTextBox1_TextChanged);
             this.maskedTextBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.maskedTextBox1_KeyPress);
@@ -167,7 +169,7 @@ namespace Course
             this.label7.Location = new System.Drawing.Point(0, 20);
             this.label7.Margin = new System.Windows.Forms.Padding(0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(253, 2);
+            this.label7.Size = new System.Drawing.Size(222, 2);
             this.label7.TabIndex = 0;
             // 
             // label6
@@ -181,12 +183,14 @@ namespace Course
             // 
             // button1
             // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.BackColor = System.Drawing.Color.Peru;
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(12, 156);
+            this.button1.Location = new System.Drawing.Point(12, 159);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(357, 39);
+            this.button1.Size = new System.Drawing.Size(326, 39);
             this.button1.TabIndex = 10;
             this.button1.Text = "Записать";
             this.button1.UseVisualStyleBackColor = false;
@@ -197,7 +201,7 @@ namespace Course
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.NavajoWhite;
-            this.ClientSize = new System.Drawing.Size(381, 207);
+            this.ClientSize = new System.Drawing.Size(350, 210);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.maskedTextBox1);
