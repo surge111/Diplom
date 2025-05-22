@@ -29,13 +29,28 @@ namespace Course
 
         private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!("ёйцукенгшщзхъфывапролджэячсмитьбю1234567890- ".Contains(e.KeyChar.ToString().ToLower()) ||
-                char.IsPunctuation(e.KeyChar) ||
-                e.KeyChar == (char)Keys.Back ||
-                e.KeyChar == (char)Keys.Delete))
+            if (tableName == "category")
             {
-                e.Handled = true;
-                return;
+                if (!("ёйцукенгшщзхъфывапролджэячсмитьбю1234567890- ".Contains(e.KeyChar.ToString().ToLower()) ||
+                    char.IsPunctuation(e.KeyChar) ||
+                    e.KeyChar == (char)Keys.Back ||
+                    e.KeyChar == (char)Keys.Delete))
+                {
+                    e.Handled = true;
+                    return;
+                }
+            }
+            else if (tableName == "supplier")
+            {
+                if (!("1234567890- ".Contains(e.KeyChar.ToString().ToLower()) ||
+                    char.IsLetter(e.KeyChar) ||
+                    char.IsPunctuation(e.KeyChar) ||
+                    e.KeyChar == (char)Keys.Back ||
+                    e.KeyChar == (char)Keys.Delete))
+                {
+                    e.Handled = true;
+                    return;
+                }
             }
         }
 

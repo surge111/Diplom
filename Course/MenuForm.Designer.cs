@@ -158,7 +158,7 @@ namespace Course
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(251, 39);
             this.button8.TabIndex = 7;
-            this.button8.Text = "Заказчики";
+            this.button8.Text = "Клиенты";
             this.button8.UseVisualStyleBackColor = false;
             this.button8.Click += new System.EventHandler(this.button8_Click);
             // 

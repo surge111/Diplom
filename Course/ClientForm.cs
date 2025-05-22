@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Office.Interop.Excel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,13 +13,23 @@ namespace Course
 {
     public partial class ClientForm : Form
     {
+        private Dictionary<string, string> client = null;
         public ClientForm()
         {
             InitializeComponent();
         }
+        public ClientForm(Dictionary<string, string> client)
+        {
+            InitializeComponent();
+            textBox1.Text = client["ClientSurname"];
+            textBox2.Text = client["ClientName"];
+            textBox3.Text = client["ClientPatronymic"];
+            maskedTextBox1.Text = client["ClientPhone"].Substring(1);
+            this.client = client;
+        }
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!("ёйцукенгшщзхъфывапролджэячсмитьбю- ".Contains(e.KeyChar.ToString().ToLower()) ||
+            if (!("ёйцукенгшщзхъфывапролджэячсмитьбю-".Contains(e.KeyChar.ToString().ToLower()) ||
                 e.KeyChar == (char)Keys.Back ||
                 e.KeyChar == (char)Keys.Delete))
             {
@@ -33,7 +44,7 @@ namespace Course
 
         private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!("ёйцукенгшщзхъфывапролджэячсмитьбю- ".Contains(e.KeyChar.ToString().ToLower()) ||
+            if (!("ёйцукенгшщзхъфывапролджэячсмитьбю-".Contains(e.KeyChar.ToString().ToLower()) ||
                 e.KeyChar == (char)Keys.Back ||
                 e.KeyChar == (char)Keys.Delete))
             {
@@ -48,7 +59,7 @@ namespace Course
 
         private void textBox3_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!("ёйцукенгшщзхъфывапролджэячсмитьбю- ".Contains(e.KeyChar.ToString().ToLower()) ||
+            if (!("ёйцукенгшщзхъфывапролджэячсмитьбю".Contains(e.KeyChar.ToString().ToLower()) ||
                 e.KeyChar == (char)Keys.Back ||
                 e.KeyChar == (char)Keys.Delete))
             {
@@ -113,7 +124,75 @@ namespace Course
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            var workerSelected = client != null;
+            if (client == null)
+            {
+                client = new Dictionary<string, string>();
+            }
+            client["ClientSurname"] = textBox1.Text;
+            client["ClientName"] = textBox2.Text;
+            client["ClientPatronymic"] = textBox3.Text;
+            client["ClientPhone"] = maskedTextBox1.Text
+                .Replace("+7", "8")
+                .Replace("(", "")
+                .Replace(")", "")
+                .Replace("-", "");
+            if (workerSelected)
+            {
+                //update
+                if (MessageBox.Show("Редактировать запись?", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk) != DialogResult.OK)
+                {
+                    return;
+                }
+                bool updated;
+                try
+                {
+                    updated = Connection.UpdateObject("worker", client);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                if (updated)
+                {
+                    MessageBox.Show("Запись редактирована", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Не удалось редактировать запись", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+            }
+            else
+            {
+                //insert
+                if (MessageBox.Show("Добавить запись?", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk) != DialogResult.OK)
+                {
+                    return;
+                }
+                bool inserted;
+                try
+                {
+                    inserted = Connection.InsertObject("worker", client);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                if (inserted)
+                {
+                    MessageBox.Show("Запись добавлена", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Не удалось добавить запись", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+            }
         }
     }
 }

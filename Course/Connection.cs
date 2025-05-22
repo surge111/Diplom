@@ -1344,7 +1344,7 @@ namespace Course
                 if (!(columns.Length == values.Length))
                 {
                     tr.Rollback();
-                    conn.Close();
+                    Close(opened);
                     return i;
                 }
                 for (var j = 0; j < values.Length; j++)
@@ -1358,14 +1358,14 @@ namespace Course
                     if (res != 1)
                     {
                         tr.Rollback();
-                        conn.Close();
+                        Close(opened);
                         return i;
                     }
                 }
                 catch (Exception ex)
                 {
                     tr.Rollback();
-                    conn.Close();
+                    Close(opened);
                     throw ex;
                 }
             }
@@ -1373,6 +1373,53 @@ namespace Course
             conn.Close();
             return -1;
         }
-
+        public static void ExportData(FileStream file, string tableName)
+        {
+            bool opened;
+            try
+            {
+                opened = Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            var columns = new string[] { };
+            try
+            {
+                columns = Connection.GetColumns(tableName);
+            }
+            catch (Exception ex)
+            {
+                Close(opened);
+                throw ex;
+            }
+            var cmd = new MySqlCommand($"select {string.Join(", ", columns)} from {tableName}", conn);
+            //var rdr = cmd.ExecuteReader();
+            
+            using (StreamWriter sw = new StreamWriter(file))
+            {
+                sw.WriteLine(string.Join(";", columns));
+                using (var rdr = cmd.ExecuteReader())
+                {
+                    var arr = new string[] { };
+                    foreach (var col in columns)
+                    {
+                        arr = arr.Append(rdr[col].ToString()).ToArray();
+                    }
+                    sw.WriteLine(string.Join(";", arr));
+                    while (rdr.Read())
+                    {
+                        arr = new string[] { };
+                        foreach (var col in columns)
+                        {
+                            arr = arr.Append(rdr[col].ToString()).ToArray();
+                        }
+                        sw.WriteLine(string.Join(";", arr));
+                    }
+                }
+            }
+            Close(opened);
+        }
     }
 }

@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Configuration;
 using System.Security.Cryptography;
 using System.Threading;
+using System.IO;
 
 namespace Course
 {
@@ -187,6 +188,36 @@ namespace Course
             if (this.Visible && MessageBox.Show("Выйти?", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk) != DialogResult.OK)
             {
                 e.Cancel = true;
+                return;
+            }
+            var dumpDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), $"SetupInstaller\\Saves\\save_{DateTime.Now.Date.ToString("dd_MM_yyyy")}");
+            var i = 1;
+            while (Directory.Exists(dumpDir))
+            {
+                dumpDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), $"SetupInstaller\\Saves\\save_{DateTime.Now.Date.ToString("dd_MM_yyyy")}_{i}");
+                i++;
+            }
+            Directory.CreateDirectory(dumpDir);
+            string[] tables;
+            try
+            {
+                tables = Connection.GetTables();
+            }
+            catch (Exception ex)
+            {
+                return;
+            }
+            foreach (var table in tables)
+            {
+                FileStream file = File.Create(Path.Combine(dumpDir, $"{table}_data.csv"));
+                try
+                {
+                    Connection.ExportData(file, table);
+                }
+                catch (Exception ex)
+                {
+                    ;
+                }
             }
         }
 

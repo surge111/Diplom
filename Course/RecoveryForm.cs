@@ -51,10 +51,12 @@ namespace Course
             if (comboBox2.SelectedIndex == -1)
             {
                 button2.Enabled = false;
+                button3.Enabled = false;
             }
             else
             {
                 button2.Enabled = true;
+                button3.Enabled = true;
             }
         }
 
@@ -169,6 +171,66 @@ namespace Course
         private void RecoveryForm_Scroll(object sender, ScrollEventArgs e)
         {
             timer = 0;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (comboBox2.SelectedIndex < 0)
+            {
+                MessageBox.Show("Выберите таблицу для экспорта", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            var d = new SaveFileDialog();
+            d.Filter = "Comma Separated Values (*.csv) | *.csv";
+            if (d.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+            FileStream file = (FileStream)d.OpenFile();
+            Connection.ExportData(file, comboBox2.SelectedValue.ToString());
+            file.Close();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            var d = new FolderBrowserDialog();
+            d.ShowNewFolderButton = true;
+            if (d.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+            var dumpDir = Path.Combine(d.SelectedPath, $"save_{DateTime.Now.Date.ToString("dd_MM_yyyy")}");
+            var i = 1;
+            while (Directory.Exists(dumpDir))
+            {
+                dumpDir = Path.Combine(d.SelectedPath, $"save_{DateTime.Now.Date.ToString("dd_MM_yyyy")}_{i}");
+                i++;
+            }
+            Directory.CreateDirectory(dumpDir);
+            string[] tables;
+            try
+            {
+                tables = Connection.GetTables();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            foreach (var table in tables)
+            {
+                FileStream file = File.Create(Path.Combine(dumpDir, $"{table}_data.csv"));
+                try
+                {
+                    Connection.ExportData(file, table);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            MessageBox.Show("Резервное копирование завершено", "Резервное копирование", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
         }
     }
 }

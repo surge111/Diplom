@@ -29,7 +29,7 @@ namespace Course
 
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!("ёйцукенгшщзхъфывапролджэячсмитьбю- ".Contains(e.KeyChar.ToString().ToLower()) ||
+            if (!("ёйцукенгшщзхъфывапролджэячсмитьбю-".Contains(e.KeyChar.ToString().ToLower()) ||
                 e.KeyChar == (char)Keys.Back ||
                 e.KeyChar == (char)Keys.Delete))
             {
@@ -44,7 +44,7 @@ namespace Course
 
         private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!("ёйцукенгшщзхъфывапролджэячсмитьбю- ".Contains(e.KeyChar.ToString().ToLower()) ||
+            if (!("ёйцукенгшщзхъфывапролджэячсмитьбю-".Contains(e.KeyChar.ToString().ToLower()) ||
                 e.KeyChar == (char)Keys.Back ||
                 e.KeyChar == (char)Keys.Delete))
             {
@@ -59,7 +59,7 @@ namespace Course
 
         private void textBox3_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!("ёйцукенгшщзхъфывапролджэячсмитьбю- ".Contains(e.KeyChar.ToString().ToLower()) ||
+            if (!("ёйцукенгшщзхъфывапролджэячсмитьбю".Contains(e.KeyChar.ToString().ToLower()) ||
                 e.KeyChar == (char)Keys.Back ||
                 e.KeyChar == (char)Keys.Delete))
             {

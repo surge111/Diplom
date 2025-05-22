@@ -36,10 +36,13 @@ namespace Course
         {
             if (User.Role == "Сотрудник")
             {
-                flowLayoutPanel2.Visible = false;
-                contextMenuStrip1.Items.Remove(contextMenuStrip1.Items["добавитьToolStripMenuItem"]);
-                contextMenuStrip1.Items.Remove(contextMenuStrip1.Items["редактироватьToolStripMenuItem"]);
-                contextMenuStrip1.Items.Remove(contextMenuStrip1.Items["удалитьToolStripMenuItem"]);
+                if (tableName == "product")
+                {
+                    flowLayoutPanel2.Visible = false;
+                    contextMenuStrip1.Items.Remove(contextMenuStrip1.Items["добавитьToolStripMenuItem"]);
+                    contextMenuStrip1.Items.Remove(contextMenuStrip1.Items["редактироватьToolStripMenuItem"]);
+                    contextMenuStrip1.Items.Remove(contextMenuStrip1.Items["удалитьToolStripMenuItem"]);
+                }
             }
             if (User.Role == "Менеджер")
             {
@@ -523,8 +526,13 @@ namespace Course
 
         private void удалитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.SelectedRows.Count <= 0)
+            if (dataGridView1.SelectedRows.Count <= 0 && dataGridView1.SelectedRows[0].Index >= 0)
             {
+                return;
+            }
+            if (tableName == "order" && dataGridView1["OrderStatus", dataGridView1.SelectedRows[0].Index].Value.ToString() == "Проведён")
+            {
+                MessageBox.Show("Невозможно удалить проведённый заказ", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
                 return;
             }
             DialogResult res = DialogResult.None;
