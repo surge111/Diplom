@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
@@ -17,6 +18,8 @@ namespace Course
 {
     public partial class ListForm : Form
     {
+        private int time = Convert.ToInt32(ConfigurationManager.OpenExeConfiguration(Application.ExecutablePath).AppSettings.Settings["time"].Value);
+        private int timer = 0;
         private int page = 1;
         private int totalPages = 1;
         private string tableName;
@@ -25,6 +28,16 @@ namespace Course
         public ListForm(string tableName, string orderId = null)
         {
             InitializeComponent();
+            foreach (var c in this.Controls)
+            {
+                ((Control)c).KeyPress += new KeyPressEventHandler(ListForm_KeyPress);
+                ((Control)c).MouseMove += new MouseEventHandler(ListForm_MouseMove);
+                ((Control)c).MouseClick += new MouseEventHandler(ListForm_MouseClick);
+                if (c is ScrollableControl)
+                {
+                    ((ScrollableControl)c).Scroll += new ScrollEventHandler(ListForm_Scroll);
+                }
+            }
             this.tableName = tableName;
             if (tableName == "product" && orderId != null)
             {
@@ -67,6 +80,7 @@ namespace Course
             GetTotalPages();
             InsertPages();
             FillDGVData();
+            timer1.Start();
         }
         private void InsertPages()
         {
@@ -178,6 +192,12 @@ namespace Course
                         SetHiddenPhoneColumn(1);
                         break;
                     }
+                case "client":
+                    {
+                        SetFioColumn(0);
+                        SetHiddenPhoneColumn(1);
+                        break;
+                    }
                 case "user":
                     {
                         dataGridView1.Columns["UserLogin"].Visible = true;
@@ -211,7 +231,7 @@ namespace Course
         {
             for (int i = 0; i < dataGridView1.Rows.Count; i++)
             {
-                if (DateTime.Parse(dataGridView1["ProductDiscount", i].Value.ToString()).Date < DateTime.Now.Date)
+                if (Convert.ToInt32(dataGridView1["ProductDiscount", i].Value.ToString()) >= 5)
                 {
                     dataGridView1["TotalCost", i].Style.BackColor = Color.LightGreen;
                 }
@@ -233,17 +253,17 @@ namespace Course
             dataGridView1.Columns.Insert(columnIndex, col);
             for (int i = 0; i < dataGridView1.Rows.Count; i++)
             {
-                dataGridView1[columnIndex, i].Value = $"{dataGridView1["WorkerPhone", i].Value.ToString().Substring(0, 4) + "***" + dataGridView1["WorkerPhone", i].Value.ToString().Substring(7)}";
+                dataGridView1[columnIndex, i].Value = $"{dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Phone", i].Value.ToString().Substring(0, 4) + "***" + dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Phone", i].Value.ToString().Substring(7)}";
             }
         }
         private void SetFioColumn(int columnIndex)
         {
             DataGridViewTextBoxColumn col = new DataGridViewTextBoxColumn();
-            col.Name = "WorkerFio";
+            col.Name = "Fio";
             col.HeaderText = "ФИО";
             try
             {
-                dataGridView1.Columns.Remove("WorkerFio");
+                dataGridView1.Columns.Remove("Fio");
             }
             catch
             {
@@ -252,7 +272,14 @@ namespace Course
             dataGridView1.Columns.Insert(columnIndex, col);
             for (int i = 0; i < dataGridView1.Rows.Count; i++)
             {
-                dataGridView1[columnIndex, i].Value = $"{dataGridView1["WorkerSurname", i].Value} {dataGridView1["WorkerName", i].Value.ToString()[0]}.{dataGridView1["WorkerPatronymic", i].Value.ToString()[0]}.";
+                if (tableName != "user")
+                {
+                    dataGridView1[columnIndex, i].Value = $"{dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Surname", i].Value} {dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Name", i].Value.ToString()[0]}.{dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Patronymic", i].Value.ToString()[0]}.";
+                }
+                else
+                {
+                    dataGridView1[columnIndex, i].Value = $"{dataGridView1["WorkerSurname", i].Value} {dataGridView1["WorkerName", i].Value.ToString()[0]}.{dataGridView1["WorkerPatronymic", i].Value.ToString()[0]}.";
+                }
             }
         }
         private void SetImageColumn(int columnIndex)
@@ -320,6 +347,7 @@ namespace Course
         }
         private void добавитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            timer1.Stop();
             DialogResult res = DialogResult.None;
             switch (tableName)
             {
@@ -353,11 +381,18 @@ namespace Course
                         res = f.ShowDialog();
                         break;
                     }
+                case "client":
+                    {
+                        var f = new ClientForm();
+                        res = f.ShowDialog();
+                        break;
+                    }
             }
             if (res == DialogResult.OK)
             {
                 FillDGVData();
             }
+            timer1.Start();
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -446,6 +481,7 @@ namespace Course
 
         private void редактироватьToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            timer1.Stop();
             if (dataGridView1.SelectedRows.Count <= 0)
             {
                 return;
@@ -517,16 +553,28 @@ namespace Course
                         res = f.ShowDialog();
                         break;
                     }
+                case "client":
+                    {
+                        entity.Add("ClientId", dataGridView1["ClientId", rowIndex].Value.ToString());
+                        entity.Add("ClientSurname", dataGridView1["ClientSurname", rowIndex].Value.ToString());
+                        entity.Add("ClientName", dataGridView1["ClientName", rowIndex].Value.ToString());
+                        entity.Add("ClientPatronymic", dataGridView1["ClientPatronymic", rowIndex].Value.ToString());
+                        entity.Add("ClientPhone", dataGridView1["ClientPhone", rowIndex].Value.ToString());
+                        var f = new ClientForm(entity);
+                        res = f.ShowDialog();
+                        break;
+                    }
             }
             if (res == DialogResult.OK)
             {
                 FillDGVData();
             }
+            timer1.Start();
         }
 
         private void удалитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.SelectedRows.Count <= 0 && dataGridView1.SelectedRows[0].Index >= 0)
+            if (dataGridView1.SelectedRows.Count <= 0 || dataGridView1.SelectedRows[0].Index < 0)
             {
                 return;
             }
@@ -541,7 +589,17 @@ namespace Course
             res = MessageBox.Show("Удалить запись?", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
             if (res == DialogResult.OK)
             {
-                if (Connection.DeleteObject(tableName, dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Id", rowIndex].Value.ToString()))
+                bool deleted = false;
+                try
+                {
+                    deleted = Connection.DeleteObject(tableName, dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Id", rowIndex].Value.ToString());
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                if (deleted)
                 {
                     MessageBox.Show("Запись успешно удалена", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                     FillDGVData();
@@ -555,6 +613,7 @@ namespace Course
         
         private void button3_Click(object sender, EventArgs e)
         {
+            timer1.Stop();
             try
             {
                 ReportBuilder.ProductQuantityReport(Connection.SelectTable(tableName,
@@ -566,18 +625,20 @@ namespace Course
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
             }
+            timer1.Start();
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
+            timer1.Stop();
             var f = new OrderForm(orderId);
             var res = f.ShowDialog();
             if (res == DialogResult.OK)
             {
                 orderId = null;
             }
+            timer1.Start();
         }
 
         private void добавитьВЗаказToolStripMenuItem_Click(object sender, EventArgs e)
@@ -590,6 +651,7 @@ namespace Course
             {
                 var order = new Dictionary<string, string>();
                 order.Add("OrderWorkerId", User.WorkerId);
+                order.Add("OrderClientId", "1");
                 order.Add("OrderDate", DateTime.Now.Date.ToString("yyyy-MM-dd"));
                 order.Add("OrderStatus", "Новый");
                 try
@@ -617,10 +679,12 @@ namespace Course
 
         private void button4_Click(object sender, EventArgs e)
         {
+            timer1.Stop();
             var f = new DateSelectForm();
             var res = f.ShowDialog();
             if (res != DialogResult.OK)
             {
+                timer1.Start();
                 return;
             }
             try
@@ -636,8 +700,8 @@ namespace Course
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
             }
+            timer1.Start();
         }
 
         private void linkLabel_Click(object sender, EventArgs e)
@@ -697,6 +761,79 @@ namespace Course
         private void условноеФорматированиеToolStripMenuItem_Click(object sender, EventArgs e)
         {
             panel3.Visible = true;
+        }
+
+        private void ListForm_SizeChanged(object sender, EventArgs e)
+        {
+            dataGridView1.Height = this.Height - 250;
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            timer++;
+            if (timer >= time)
+            {
+                timer1.Stop();
+                foreach (var f in Application.OpenForms)
+                {
+                    if (f is AuthForm)
+                    {
+                        ((AuthForm)f).Visible = true;
+                    }
+                    else
+                    {
+                        ((Form)f).Close();
+                    }
+                }
+            }
+        }
+
+        private void ListForm_VisibleChanged(object sender, EventArgs e)
+        {
+            if (Visible)
+            {
+                timer1.Start();
+            }
+            else
+            {
+                timer1.Stop();
+            }
+        }
+
+        private void ListForm_MouseMove(object sender, MouseEventArgs e)
+        {
+            timer = 0;
+        }
+
+        private void ListForm_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            timer = 0;
+        }
+
+        private void ListForm_MouseClick(object sender, MouseEventArgs e)
+        {
+            timer = 0;
+        }
+
+        private void ListForm_Scroll(object sender, ScrollEventArgs e)
+        {
+            timer = 0;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (page == totalPages)
+            {
+                return;
+            }
+            page++;
+            InsertPages();
+            FillDGVData();
+        }
+
+        private void ListForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            timer1.Stop();
         }
     }
 }

@@ -200,6 +200,38 @@ namespace Course
             }
             return workers;
         }
+        static public KeyValuePair<string, string>[] GetClients()
+        {
+            bool opened;
+            try
+            {
+                opened = Connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            var cmd = new MySqlCommand("select ClientId, ClientSurname, ClientName, ClientPatronymic from client", conn);
+            var da = new MySqlDataAdapter(cmd);
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Connection.Close(opened);
+                throw ex;
+            }
+            var dt = new DataTable();
+            da.Fill(dt);
+            Connection.Close(opened);
+            var clients = new KeyValuePair<string, string>[] { };
+            for (var i = 0; i < dt.Rows.Count; i++)
+            {
+                clients = clients.Append(new KeyValuePair<string, string>(dt.Rows[i].ItemArray[0].ToString(), $"{dt.Rows[i].ItemArray[1].ToString()} {dt.Rows[i].ItemArray[2].ToString()[0]}.{dt.Rows[i].ItemArray[3].ToString()[0]}.")).ToArray();
+            }
+            return clients;
+        }
         static public string[] GetRoles()
         {
             bool opened;
@@ -1394,7 +1426,7 @@ namespace Course
                 Close(opened);
                 throw ex;
             }
-            var cmd = new MySqlCommand($"select {string.Join(", ", columns)} from {tableName}", conn);
+            var cmd = new MySqlCommand($"select {string.Join(", ", columns)} from `{tableName}`", conn);
             //var rdr = cmd.ExecuteReader();
             
             using (StreamWriter sw = new StreamWriter(file))
@@ -1402,15 +1434,15 @@ namespace Course
                 sw.WriteLine(string.Join(";", columns));
                 using (var rdr = cmd.ExecuteReader())
                 {
-                    var arr = new string[] { };
-                    foreach (var col in columns)
-                    {
-                        arr = arr.Append(rdr[col].ToString()).ToArray();
-                    }
-                    sw.WriteLine(string.Join(";", arr));
+                    //var arr = new string[] { };
+                    //foreach (var col in columns)
+                    //{
+                    //    arr = arr.Append(rdr[col].ToString()).ToArray();
+                    //}
+                    //sw.WriteLine(string.Join(";", arr));
                     while (rdr.Read())
                     {
-                        arr = new string[] { };
+                        var arr = new string[] { };
                         foreach (var col in columns)
                         {
                             arr = arr.Append(rdr[col].ToString()).ToArray();

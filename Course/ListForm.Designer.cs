@@ -63,6 +63,7 @@
             this.button7 = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.условноеФорматированиеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -94,7 +95,7 @@
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(685, 294);
+            this.dataGridView1.Size = new System.Drawing.Size(685, 293);
             this.dataGridView1.TabIndex = 0;
             // 
             // contextMenuStrip1
@@ -150,6 +151,7 @@
             // 
             // flowLayoutPanel1
             // 
+            this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.flowLayoutPanel1.Controls.Add(this.button1);
             this.flowLayoutPanel1.Controls.Add(this.linkLabel1);
             this.flowLayoutPanel1.Controls.Add(this.button2);
@@ -184,9 +186,11 @@
             this.button2.TabIndex = 3;
             this.button2.Text = "→";
             this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(300, 336);
             this.label1.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
@@ -368,6 +372,7 @@
             // 
             // button6
             // 
+            this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button6.BackColor = System.Drawing.Color.Peru;
             this.button6.FlatAppearance.BorderSize = 0;
             this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -445,6 +450,11 @@
             this.условноеФорматированиеToolStripMenuItem.Text = "Условное форматирование";
             this.условноеФорматированиеToolStripMenuItem.Click += new System.EventHandler(this.условноеФорматированиеToolStripMenuItem_Click);
             // 
+            // timer1
+            // 
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // ListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
@@ -466,7 +476,14 @@
             this.Name = "ListForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Пекарня \"Круглова\"";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ListForm_FormClosing);
             this.Load += new System.EventHandler(this.ListForm_Load);
+            this.Scroll += new System.Windows.Forms.ScrollEventHandler(this.ListForm_Scroll);
+            this.SizeChanged += new System.EventHandler(this.ListForm_SizeChanged);
+            this.VisibleChanged += new System.EventHandler(this.ListForm_VisibleChanged);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ListForm_KeyPress);
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ListForm_MouseClick);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ListForm_MouseMove);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
@@ -523,5 +540,6 @@
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem условноеФорматированиеToolStripMenuItem;
+        private System.Windows.Forms.Timer timer1;
     }
 }

@@ -18,8 +18,6 @@ namespace Course
         public OrderForm()
         {
             InitializeComponent();
-            comboBox2.DisplayMember = "Value";
-            comboBox2.ValueMember = "Key";
             FillCombos();
             comboBox2.SelectedValue = User.WorkerId;
             dateTimePicker1.Value = DateTime.Now;
@@ -39,8 +37,6 @@ namespace Course
         public OrderForm(string orderId)
         {
             InitializeComponent();
-            comboBox2.DisplayMember = "Value";
-            comboBox2.ValueMember = "Key";
             FillCombos();
             comboBox2.SelectedValue = User.WorkerId;
             dateTimePicker1.Value = DateTime.Now;
@@ -58,12 +54,11 @@ namespace Course
         public OrderForm(Dictionary<string, string> order)
         {
             InitializeComponent();
-            comboBox2.DisplayMember = "Value";
-            comboBox2.ValueMember = "Key";
             FillCombos();
             try
             {
                 comboBox2.SelectedValue = order["OrderWorkerId"];
+                comboBox2.SelectedValue = order["OrderClientId"];
             }
             catch (Exception ex)
             {
@@ -85,7 +80,12 @@ namespace Course
         {
             try
             {
+                comboBox2.DisplayMember = "Value";
+                comboBox2.ValueMember = "Key";
                 comboBox2.DataSource = Connection.GetWorkers();
+                comboBox1.DisplayMember = "Value";
+                comboBox1.ValueMember = "Key";
+                comboBox1.DataSource = Connection.GetClients();
             }
             catch (Exception ex)
             {
@@ -215,6 +215,23 @@ namespace Course
 
         private void OrderForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (comboBox1.SelectedIndex < 0 || comboBox2.SelectedIndex < 0)
+            {
+                return;
+            }
+            order["OrderWorkerId"] = comboBox2.SelectedValue.ToString();
+            order["OrderDate"] = dateTimePicker1.Value.Date.ToString("yyyy-MM-dd");
+            order["OrderClientId"] = comboBox1.SelectedValue.ToString();
+            bool updated;
+            try
+            {
+                updated = Connection.UpdateObject("order", order);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             if (order["OrderStatus"] == "Проведён")
             {
                 this.DialogResult = DialogResult.OK;

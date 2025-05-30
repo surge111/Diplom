@@ -51,7 +51,7 @@ namespace Course
                 e.Handled = true;
                 return;
             }
-            if ("ёйцукенгшщзхъфывапролджэячсмитьбю".Contains(e.KeyChar.ToString().ToLower()) && textBox1.Text.Length == 0)
+            if ("ёйцукенгшщзхъфывапролджэячсмитьбю".Contains(e.KeyChar.ToString().ToLower()) && textBox2.Text.Length == 0)
             {
                 e.KeyChar = e.KeyChar.ToString().ToUpper()[0];
             }
@@ -66,7 +66,7 @@ namespace Course
                 e.Handled = true;
                 return;
             }
-            if ("ёйцукенгшщзхъфывапролджэячсмитьбю".Contains(e.KeyChar.ToString().ToLower()) && textBox1.Text.Length == 0)
+            if ("ёйцукенгшщзхъфывапролджэячсмитьбю".Contains(e.KeyChar.ToString().ToLower()) && textBox3.Text.Length == 0)
             {
                 e.KeyChar = e.KeyChar.ToString().ToUpper()[0];
             }

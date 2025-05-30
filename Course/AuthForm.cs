@@ -37,15 +37,7 @@ namespace Course
 
         private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
         {
-            //if (!(char.IsLetterOrDigit(e.KeyChar) ||
-            //    char.IsPunctuation(e.KeyChar) ||
-            //    char.IsSeparator(e.KeyChar) ||
-            //    e.KeyChar == (char)Keys.Back ||
-            //    e.KeyChar == (char)Keys.Delete))
-            //{
-            //    e.Handled = true;
-            //    return;
-            //}
+            return;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -88,7 +80,7 @@ namespace Course
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (userData.Rows.Count == 1 || (textBox3.Visible && textBox3.Text != captcha))
+            if (userData.Rows.Count == 1 && (!textBox3.Visible || textBox3.Text == captcha))
             {
                 var role = userData.Rows[0].ItemArray[userData.Columns["RoleName"].Ordinal].ToString();
                 var id = userData.Rows[0].ItemArray[userData.Columns["RoleId"].Ordinal].ToString();
@@ -101,8 +93,8 @@ namespace Course
                 f.ShowDialog();
                 try
                 {
-                    ClearForm();
                     this.Visible = true;
+                    ClearForm(true);
                 }
                 catch
                 {
@@ -113,7 +105,7 @@ namespace Course
             {
                 var captchaVisible = textBox3.Visible;
                 MessageBox.Show(textBox3.Visible ? "Неверно введены логин, пароль или Captcha" : "Неверно введены логин или пароль","",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
-                ClearForm();
+                ClearForm(false);
                 SetCaptchaVisibility(true);
                 if (captchaVisible)
                 {
@@ -123,7 +115,7 @@ namespace Course
                 }
             }
         }
-        private void ClearForm()
+        private void ClearForm(bool hideCaptcha)
         {
             textBox1.Text = "";
             textBox2.Text = "";
@@ -131,7 +123,7 @@ namespace Course
             textBoxUnderline1.BackColor = Color.DarkRed;
             textBoxUnderline2.BackColor = Color.DarkRed;
             SwitchButton();
-            if (textBox3.Visible)
+            if (textBox3.Visible && hideCaptcha)
             {
                 SetCaptchaVisibility(false);
             }

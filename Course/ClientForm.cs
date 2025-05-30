@@ -51,7 +51,7 @@ namespace Course
                 e.Handled = true;
                 return;
             }
-            if ("ёйцукенгшщзхъфывапролджэячсмитьбю".Contains(e.KeyChar.ToString().ToLower()) && textBox1.Text.Length == 0)
+            if ("ёйцукенгшщзхъфывапролджэячсмитьбю".Contains(e.KeyChar.ToString().ToLower()) && textBox2.Text.Length == 0)
             {
                 e.KeyChar = e.KeyChar.ToString().ToUpper()[0];
             }
@@ -66,7 +66,7 @@ namespace Course
                 e.Handled = true;
                 return;
             }
-            if ("ёйцукенгшщзхъфывапролджэячсмитьбю".Contains(e.KeyChar.ToString().ToLower()) && textBox1.Text.Length == 0)
+            if ("ёйцукенгшщзхъфывапролджэячсмитьбю".Contains(e.KeyChar.ToString().ToLower()) && textBox3.Text.Length == 0)
             {
                 e.KeyChar = e.KeyChar.ToString().ToUpper()[0];
             }
@@ -124,7 +124,7 @@ namespace Course
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var workerSelected = client != null;
+            var clientSelected = client != null;
             if (client == null)
             {
                 client = new Dictionary<string, string>();
@@ -137,7 +137,7 @@ namespace Course
                 .Replace("(", "")
                 .Replace(")", "")
                 .Replace("-", "");
-            if (workerSelected)
+            if (clientSelected)
             {
                 //update
                 if (MessageBox.Show("Редактировать запись?", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk) != DialogResult.OK)
@@ -147,7 +147,7 @@ namespace Course
                 bool updated;
                 try
                 {
-                    updated = Connection.UpdateObject("worker", client);
+                    updated = Connection.UpdateObject("client", client);
                 }
                 catch (Exception ex)
                 {
@@ -175,7 +175,7 @@ namespace Course
                 bool inserted;
                 try
                 {
-                    inserted = Connection.InsertObject("worker", client);
+                    inserted = Connection.InsertObject("client", client);
                 }
                 catch (Exception ex)
                 {

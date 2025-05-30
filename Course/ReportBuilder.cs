@@ -37,15 +37,13 @@ namespace Course
             Excel.Sheets worksheets = workbook.Worksheets;
             Excel.Worksheet worksheet = worksheets.Add();
             worksheet.Cells[1, "A"] = "Остатки товаров";
-            worksheet.Cells[2, "A"] = "#";
-            worksheet.Cells[2, "B"] = "Наименование";
-            worksheet.Cells[2, "C"] = "Количество";
+            worksheet.Cells[2, "A"] = "Наименование";
+            worksheet.Cells[2, "B"] = "Количество";
             var table = data;
             for (int i = 0; i < table.Rows.Count; i++)
             {
-                worksheet.Cells[i + 3, "A"] = table.Rows[i].ItemArray[table.Columns["ProductId"].Ordinal].ToString();
-                worksheet.Cells[i + 3, "B"] = table.Rows[i].ItemArray[table.Columns["ProductName"].Ordinal].ToString();
-                worksheet.Cells[i + 3, "C"] = table.Rows[i].ItemArray[table.Columns["ProductQuantity"].Ordinal].ToString();
+                worksheet.Cells[i + 3, "A"] = table.Rows[i].ItemArray[table.Columns["ProductName"].Ordinal].ToString();
+                worksheet.Cells[i + 3, "B"] = table.Rows[i].ItemArray[table.Columns["ProductQuantity"].Ordinal].ToString();
             }
             excelApp.Visible = true;
             ReleaseObject(worksheet);
@@ -63,10 +61,11 @@ namespace Course
             Excel.Sheets worksheets = workbook.Worksheets;
             Excel.Worksheet worksheet = worksheets.Add();
             worksheet.Cells[1, "A"] = $"Выручка товаров за период {dateFrom.Date.ToString("dd.MM.yyyy")}-{dateTo.Date.ToString("dd.MM.yyyy")}";
-            worksheet.Cells[2, "A"] = "#";
-            worksheet.Cells[2, "B"] = "Наименование";
-            worksheet.Cells[2, "C"] = "Сумма";
+            worksheet.Cells[2, "A"] = "Наименование";
+            worksheet.Cells[2, "B"] = "Сумма";
             var table = data;
+            var totalRevenue = 0;
+            var row = 3;
             for (int i = 0; i < table.Rows.Count; i++)
             {
                 var id = table.Rows[i].ItemArray[table.Columns["ProductId"].Ordinal].ToString();
@@ -74,6 +73,11 @@ namespace Course
                 try
                 {
                     revenue = Connection.GetProductRevenue(id, dateFrom, dateTo);
+                    if (revenue == "0")
+                    {
+                        continue;
+                    }
+                    totalRevenue += Convert.ToInt32(revenue);
                 }
                 catch (Exception ex)
                 {
@@ -85,10 +89,13 @@ namespace Course
                     ReleaseObject(excelApp);
                     throw ex;
                 }
-                worksheet.Cells[i + 3, "A"] = id;
-                worksheet.Cells[i + 3, "B"] = table.Rows[i].ItemArray[table.Columns["ProductName"].Ordinal].ToString();
-                worksheet.Cells[i + 3, "C"] = revenue;
+                worksheet.Cells[row, "A"] = table.Rows[i].ItemArray[table.Columns["ProductName"].Ordinal].ToString();
+                worksheet.Cells[row, "B"] = revenue;
+                row++;
             }
+            worksheet.Cells[row, "A"] = "ИТОГО:";
+            worksheet.Cells[row, "B"] = totalRevenue.ToString();
+            worksheet.Columns.AutoFit();
             excelApp.Visible = true;
             ReleaseObject(worksheet);
             ReleaseObject(worksheets);
@@ -135,7 +142,8 @@ namespace Course
                 var quantity = table.Rows[i].ItemArray[table.Columns["OrderItemQuantity"].Ordinal].ToString();
                 var cost = table.Rows[i].ItemArray[table.Columns["OrderItemCost"].Ordinal].ToString();
                 worksheet.Cells[i * 2 + 8, "A"] = table.Rows[i].ItemArray[table.Columns["ProductName"].Ordinal].ToString();
-                worksheet.Cells[i * 2 + 8, "B"] = $"{quantity}x{cost}р";
+                worksheet.Cells[i * 2 + 8, "A"].WrapText = true;
+                worksheet.Cells[i * 2 + 8, "B"] = $"{quantity} * {cost}р";
                 worksheet.Cells[i * 2 + 9, "B"] = table.Rows[i].ItemArray[table.Columns["TotalCost"].Ordinal].ToString() + "р";
             }
             var row = table.Rows.Count * 2 + 8;
@@ -157,6 +165,9 @@ namespace Course
             row++;
             worksheet.Cells[row, "A"] = "Сайт ФНС:";
             worksheet.Cells[row, "B"] = "www.nalog.ru";
+            ((Excel.Range)worksheet.Columns["A"]).ColumnWidth = 24;
+            ((Excel.Range)worksheet.Columns["B"]).ColumnWidth = 22;
+            worksheet.Rows.AutoFit();
             excelApp.Visible = true;
             ReleaseObject(worksheet);
             ReleaseObject(worksheets);

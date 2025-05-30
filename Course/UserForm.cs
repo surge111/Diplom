@@ -148,7 +148,7 @@ namespace Course
             user["UserLogin"] = textBox2.Text;
             if (textBoxUnderline2.BackColor != Color.DarkGoldenrod)
             {
-                var a = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(textBox3.Text));
+                var a = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(textBox3.Text));
                 var password = BitConverter.ToString(a).Replace("-", string.Empty).ToLower();
                 user["UserPassword"] = password;
             }
