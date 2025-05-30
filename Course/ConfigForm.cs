@@ -29,33 +29,42 @@ namespace Course
             Configuration config = ConfigurationManager.OpenExeConfiguration(Application.ExecutablePath);
             textBox1.Text = config.AppSettings.Settings["host"].Value;
             textBox2.Text = config.AppSettings.Settings["user"].Value;
-            textBox3.Text = config.AppSettings.Settings["pwd"].Value;
+            textBox4.Text = config.AppSettings.Settings["time"].Value;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             Configuration config = ConfigurationManager.OpenExeConfiguration(Application.ExecutablePath);
-            config.AppSettings.Settings["host"].Value = textBox1.Text;
-            config.AppSettings.Settings["user"].Value = textBox2.Text;
-            config.AppSettings.Settings["pwd"].Value = textBox3.Text;
-            config.Save(ConfigurationSaveMode.Minimal);
-            Connection.Update(config.AppSettings.Settings["host"].Value, config.AppSettings.Settings["user"].Value, config.AppSettings.Settings["pwd"].Value);
-            if (Connection.Test())
+            var connChanged = !(config.AppSettings.Settings["host"].Value == textBox1.Text &&
+                config.AppSettings.Settings["user"].Value == textBox2.Text);
+            if (connChanged)
             {
-                MessageBox.Show("Подключение установлено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                try
+                config.AppSettings.Settings["host"].Value = textBox1.Text;
+                config.AppSettings.Settings["user"].Value = textBox2.Text;
+                config.AppSettings.Settings["pwd"].Value = textBox3.Text;
+            }
+            config.AppSettings.Settings["time"].Value = textBox4.Text;
+            config.Save(ConfigurationSaveMode.Minimal);
+            if (connChanged)
+            {
+                Connection.Update(config.AppSettings.Settings["host"].Value, config.AppSettings.Settings["user"].Value, config.AppSettings.Settings["pwd"].Value);
+                if (Connection.Test())
                 {
-                    Connection.ChangeDb(config.AppSettings.Settings["db"].Value);
+                    MessageBox.Show("Подключение установлено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    try
+                    {
+                        Connection.ChangeDb(config.AppSettings.Settings["db"].Value);
+                    }
+                    catch
+                    {
+                        ;
+                    }
                 }
-                catch
+                else
                 {
-                    ;
+                    MessageBox.Show($"Не удалось подключиться к серверу по адресу {textBox1.Text} с пользователем {textBox2.Text}" + (textBox3.Text.Length == 0 ? "(без пароля)" : " (с паролем)"), "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            else
-            {
-                MessageBox.Show($"Не удалось подключиться к серверу по адресу {textBox1.Text} с пользователем {textBox2.Text}" + (textBox3.Text.Length == 0 ? "(без пароля)" : " (с паролем)"), "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }    
         }
 
         private void ConfigForm_MouseMove(object sender, MouseEventArgs e)
@@ -103,6 +112,12 @@ namespace Course
         private void ConfigForm_Scroll(object sender, ScrollEventArgs e)
         {
             timer = 0;
+        }
+
+        private void textBox4_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !(char.IsDigit(e.KeyChar) || e.KeyChar == ((char)Keys.Delete) || e.KeyChar == ((char)Keys.Back));
+
         }
     }
 }

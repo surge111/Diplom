@@ -202,6 +202,7 @@ namespace Course
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(313, 26);
             this.textBox4.TabIndex = 9;
+            this.textBox4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox4_KeyPress);
             // 
             // label7
             // 
