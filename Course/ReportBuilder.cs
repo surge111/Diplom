@@ -45,6 +45,7 @@ namespace Course
                 worksheet.Cells[i + 3, "A"] = table.Rows[i].ItemArray[table.Columns["ProductName"].Ordinal].ToString();
                 worksheet.Cells[i + 3, "B"] = table.Rows[i].ItemArray[table.Columns["ProductQuantity"].Ordinal].ToString();
             }
+            worksheet.Columns.AutoFit();
             excelApp.Visible = true;
             ReleaseObject(worksheet);
             ReleaseObject(worksheets);

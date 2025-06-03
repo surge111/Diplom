@@ -196,7 +196,8 @@ namespace Course
             var workers = new KeyValuePair<string, string>[] { };
             for (var i = 0; i < dt.Rows.Count; i++)
             {
-                workers = workers.Append(new KeyValuePair<string, string>(dt.Rows[i].ItemArray[0].ToString(), $"{dt.Rows[i].ItemArray[1].ToString()} {dt.Rows[i].ItemArray[2].ToString()[0]}.{dt.Rows[i].ItemArray[3].ToString()[0]}.")).ToArray();
+                var fio = $"{dt.Rows[i].ItemArray[1].ToString()}" + (dt.Rows[i].ItemArray[2].ToString() != "" ? $" {dt.Rows[i].ItemArray[2].ToString()[0]}." : "") + (dt.Rows[i].ItemArray[3].ToString() != "" ? $" {dt.Rows[i].ItemArray[3].ToString()[0]}." : "");
+                workers = workers.Append(new KeyValuePair<string, string>(dt.Rows[i].ItemArray[0].ToString(), fio)).ToArray();
             }
             return workers;
         }
@@ -228,7 +229,8 @@ namespace Course
             var clients = new KeyValuePair<string, string>[] { };
             for (var i = 0; i < dt.Rows.Count; i++)
             {
-                clients = clients.Append(new KeyValuePair<string, string>(dt.Rows[i].ItemArray[0].ToString(), $"{dt.Rows[i].ItemArray[1].ToString()} {dt.Rows[i].ItemArray[2].ToString()[0]}.{dt.Rows[i].ItemArray[3].ToString()[0]}.")).ToArray();
+                var fio = $"{dt.Rows[i].ItemArray[1].ToString()}" + (dt.Rows[i].ItemArray[2].ToString() != "" ? $" {dt.Rows[i].ItemArray[2].ToString()[0]}." : "") + (dt.Rows[i].ItemArray[3].ToString() != "" ? $" {dt.Rows[i].ItemArray[3].ToString()[0]}." : "");
+                clients = clients.Append(new KeyValuePair<string, string>(dt.Rows[i].ItemArray[0].ToString(), fio)).ToArray();
             }
             return clients;
         }

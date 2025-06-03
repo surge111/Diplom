@@ -20,6 +20,7 @@ namespace Course
         {
             InitializeComponent();
             FillCombos();
+            dateTimePicker1.Value = DateTime.Now.Date;
             pictureBox1.Image = Properties.Resources.picture;
         }
         public ProductForm(Dictionary<string, string> product)
@@ -252,28 +253,28 @@ namespace Course
         {
             var productSelected = product != null;
             //copy image to res
-            int i = 1;
-            var newImg = imagePath.Substring(imagePath.LastIndexOf("\\") + 1);
-            while (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\SetupInstaller\\Resources\\ProductImages\\" + newImg))
-            {
-                newImg = imagePath.Substring(imagePath.LastIndexOf("\\") + 1, imagePath.Substring(imagePath.LastIndexOf("\\") + 1).Length - 4) + $" ({i}).jpg";
-                i++;
-            }
-                
-            try
-            {
-                File.Copy(imagePath,
-                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\SetupInstaller\\Resources\\ProductImages\\" + newImg,
-                    true);
-                imagePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\SetupInstaller\\Resources\\ProductImages\\" + newImg;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Не удалось установить изображение:\n" + imagePath + "\n" + ex.Message, "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
             if (imagePath != "")
             {
+                int i = 1;
+                var newImg = imagePath.Substring(imagePath.LastIndexOf("\\") + 1);
+                while (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\SetupInstaller\\Resources\\ProductImages\\" + newImg))
+                {
+                    newImg = imagePath.Substring(imagePath.LastIndexOf("\\") + 1, imagePath.Substring(imagePath.LastIndexOf("\\") + 1).Length - 4) + $" ({i}).jpg";
+                    i++;
+                }
+
+                try
+                {
+                    File.Copy(imagePath,
+                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\SetupInstaller\\Resources\\ProductImages\\" + newImg,
+                        true);
+                    imagePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\SetupInstaller\\Resources\\ProductImages\\" + newImg;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Не удалось установить изображение:\n" + imagePath + "\n" + ex.Message, "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 imagePath = imagePath.Substring(imagePath.LastIndexOf("\\") + 1);
             }
             if (product == null)

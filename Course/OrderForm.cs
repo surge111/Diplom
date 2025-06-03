@@ -58,12 +58,11 @@ namespace Course
             try
             {
                 comboBox2.SelectedValue = order["OrderWorkerId"];
-                comboBox2.SelectedValue = order["OrderClientId"];
+                comboBox1.SelectedValue = order["OrderClientId"];
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
             }
             dateTimePicker1.Value = DateTime.Parse(order["OrderDate"]).Date;
             if (order["OrderStatus"] == "Проведён")
@@ -71,6 +70,7 @@ namespace Course
                 button1.Text = "Сформировать чек";
                 dataGridView1.ContextMenuStrip = null;
                 comboBox2.Enabled = false;
+                comboBox1.Enabled = false;
                 dateTimePicker1.Enabled = false;
             }
             this.order = order;
@@ -172,6 +172,7 @@ namespace Course
                         else
                         {
                             order["OrderStatus"] = "Новый";
+                            MessageBox.Show("Не удалось провести заказ", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         }
                         break;
                     }
@@ -235,6 +236,18 @@ namespace Course
             if (order["OrderStatus"] == "Проведён")
             {
                 this.DialogResult = DialogResult.OK;
+            }
+        }
+
+        private void comboBox1_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0)
+                return;
+            using (var brush = new SolidBrush(e.ForeColor))
+            {
+                e.DrawBackground();
+                e.Graphics.DrawString(((KeyValuePair<string, string>)comboBox1.Items[e.Index]).Value.ToString(), e.Font, brush, e.Bounds);
+                e.DrawFocusRectangle();
             }
         }
     }

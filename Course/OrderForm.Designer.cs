@@ -191,10 +191,11 @@ namespace Course
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(496, 27);
             this.comboBox1.TabIndex = 29;
+            this.comboBox1.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.comboBox1_DrawItem);
             // 
             // label1
             // 
-            this.label1.BackColor = System.Drawing.Color.DarkRed;
+            this.label1.BackColor = System.Drawing.Color.DarkGoldenrod;
             this.label1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.label1.Location = new System.Drawing.Point(0, 25);
             this.label1.Name = "label1";
@@ -225,6 +226,7 @@ namespace Course
             this.Controls.Add(this.comboBox2);
             this.Controls.Add(this.label12);
             this.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "OrderForm";

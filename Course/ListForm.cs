@@ -51,7 +51,8 @@ namespace Course
             {
                 if (tableName == "product")
                 {
-                    flowLayoutPanel2.Visible = false;
+                    button3.Visible = false;
+                    button4.Visible = false;
                     contextMenuStrip1.Items.Remove(contextMenuStrip1.Items["добавитьToolStripMenuItem"]);
                     contextMenuStrip1.Items.Remove(contextMenuStrip1.Items["редактироватьToolStripMenuItem"]);
                     contextMenuStrip1.Items.Remove(contextMenuStrip1.Items["удалитьToolStripMenuItem"]);
@@ -72,14 +73,15 @@ namespace Course
             if (tableName != "product")
             {
                 panel2.Visible = false;
+                panel3.Visible = false;
                 flowLayoutPanel2.Visible = false;
                 contextMenuStrip1.Items.Remove(contextMenuStrip1.Items["добавитьВЗаказToolStripMenuItem"]);
-                menuStrip1.Visible = false;
             }
             FillCombos();
             GetTotalPages();
             InsertPages();
             FillDGVData();
+            label1.Text = $"Всего записей: {dataGridView1.RowCount}/{entries}";
             timer1.Start();
         }
         private void InsertPages()
@@ -184,6 +186,7 @@ namespace Course
                         dataGridView1.Columns["OrderDate"].HeaderText = "Дата заказа";
                         dataGridView1.Columns["OrderStatus"].HeaderText = "Статус";
                         SetFioColumn(1);
+                        dataGridView1.Columns["Fio"].HeaderText = "Сотрудник";
                         break;
                     }
                 case "worker":
@@ -205,6 +208,7 @@ namespace Course
                         dataGridView1.Columns["UserLogin"].HeaderText = "Логин";
                         dataGridView1.Columns["RoleName"].HeaderText = "Роль";
                         SetFioColumn(1);
+                        dataGridView1.Columns["Fio"].HeaderText = "Работник";
                         break;
                     }
                 case "product":
@@ -213,14 +217,13 @@ namespace Course
                         dataGridView1.Columns["ProductQuantity"].Visible = true;
                         dataGridView1.Columns["CategoryName"].Visible = true;
                         dataGridView1.Columns["SupplierName"].Visible = true;
-                        dataGridView1.Columns["ProductExpirationDate"].Visible = true;
                         dataGridView1.Columns["ProductName"].HeaderText = "Наименование";
                         dataGridView1.Columns["ProductQuantity"].HeaderText = "Кол-во";
                         dataGridView1.Columns["CategoryName"].HeaderText = "Категория";
                         dataGridView1.Columns["SupplierName"].HeaderText = "Поставщик";
-                        dataGridView1.Columns["ProductExpirationDate"].HeaderText = "Годен до";
                         SetImageColumn(1);
                         SetTotalCostColumn(5);
+                        SetProductStatusColumn(6);
                         MarkProducts();
                         break;
                     }
@@ -256,6 +259,33 @@ namespace Course
                 dataGridView1[columnIndex, i].Value = $"{dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Phone", i].Value.ToString().Substring(0, 4) + "***" + dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Phone", i].Value.ToString().Substring(7)}";
             }
         }
+        private void SetProductStatusColumn(int columnIndex)
+        {
+            DataGridViewTextBoxColumn col = new DataGridViewTextBoxColumn();
+            col.Name = "Status";
+            col.HeaderText = "Статус";
+            try
+            {
+                dataGridView1.Columns.Remove("Status");
+            }
+            catch
+            {
+                ;
+            }
+            dataGridView1.Columns.Insert(columnIndex, col);
+            for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            {
+                dataGridView1[columnIndex, i].Value = "В наличии";
+                if (DateTime.Parse(dataGridView1["ProductExpirationDate", i].Value.ToString()).Date < DateTime.Now.Date)
+                {
+                    dataGridView1[columnIndex, i].Value = "Требуется замена";
+                }
+                if (dataGridView1["ProductQuantity", i].Value.ToString() == "0")
+                {
+                    dataGridView1[columnIndex, i].Value = "Нет в наличии";
+                }
+            }
+        }
         private void SetFioColumn(int columnIndex)
         {
             DataGridViewTextBoxColumn col = new DataGridViewTextBoxColumn();
@@ -272,7 +302,7 @@ namespace Course
             dataGridView1.Columns.Insert(columnIndex, col);
             for (int i = 0; i < dataGridView1.Rows.Count; i++)
             {
-                if (tableName != "user")
+                if (tableName == "worker" || tableName == "client")
                 {
                     dataGridView1[columnIndex, i].Value = $"{dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Surname", i].Value} {dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Name", i].Value.ToString()[0]}.{dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Patronymic", i].Value.ToString()[0]}.";
                 }
@@ -391,6 +421,7 @@ namespace Course
             if (res == DialogResult.OK)
             {
                 FillDGVData();
+                GetTotalPages();
             }
             timer1.Start();
         }
@@ -510,6 +541,7 @@ namespace Course
                     {
                         entity.Add("OrderId", dataGridView1["OrderId", rowIndex].Value.ToString());
                         entity.Add("OrderWorkerId", dataGridView1["OrderWorkerId", rowIndex].Value.ToString());
+                        entity.Add("OrderClientId", dataGridView1["OrderClientId", rowIndex].Value.ToString());
                         entity.Add("OrderDate", dataGridView1["OrderDate", rowIndex].Value.ToString());
                         entity.Add("OrderStatus", dataGridView1["OrderStatus", rowIndex].Value.ToString());
                         var f = new OrderForm(entity);
@@ -596,13 +628,14 @@ namespace Course
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Не удалось удалить запись", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 if (deleted)
                 {
                     MessageBox.Show("Запись успешно удалена", "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                     FillDGVData();
+                    GetTotalPages();
                 }
                 else
                 {
@@ -647,6 +680,11 @@ namespace Course
             {
                 return;
             }
+            var rowIndex = dataGridView1.SelectedRows[0].Index;
+            if (rowIndex < 0)
+            {
+                return;
+            }
             if (orderId == null)
             {
                 var order = new Dictionary<string, string>();
@@ -669,7 +707,6 @@ namespace Course
             {
                 button6.Visible = true;
             }
-            var rowIndex = dataGridView1.SelectedRows[0].Index;
             var orderItem = new Dictionary<string, string>();
             orderItem.Add("OrderItemProductId", dataGridView1["ProductId", rowIndex].Value.ToString());
             orderItem.Add("OrderItemQuantity", "1");
@@ -719,10 +756,12 @@ namespace Course
             ll.LinkColor = Color.Sienna;
             page = Convert.ToInt32(ll.Text);
             FillDGVData();
+            label1.Text = $"Всего записей: {dataGridView1.RowCount}/{entries}";
         }
+        private int entries;
         private void GetTotalPages()
         {
-            int entries;
+            
             try
             {
                 entries = Connection.SelectTableLength(tableName,
@@ -738,7 +777,7 @@ namespace Course
             }
             totalPages = entries / 20 + ((entries % 20 == 0 && entries != 0) ? 0 : 1);
             page = 1;
-            label1.Text = $"Всего записей: {entries}";
+            label1.Text = $"Всего записей: {dataGridView1.RowCount}/{entries}";
             InsertPages();
         }
 
@@ -751,6 +790,7 @@ namespace Course
             page--;
             InsertPages();
             FillDGVData();
+            label1.Text = $"Всего записей: {dataGridView1.RowCount}/{entries}";
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -829,6 +869,7 @@ namespace Course
             page++;
             InsertPages();
             FillDGVData();
+            label1.Text = $"Всего записей: {dataGridView1.RowCount}/{entries}";
         }
 
         private void ListForm_FormClosing(object sender, FormClosingEventArgs e)
