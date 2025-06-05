@@ -106,12 +106,16 @@ namespace Course
                 var captchaVisible = textBox3.Visible;
                 MessageBox.Show(textBox3.Visible ? "Неверно введены логин, пароль или Captcha" : "Неверно введены логин или пароль","",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
                 ClearForm(false);
-                SetCaptchaVisibility(true);
                 if (captchaVisible)
                 {
+                    ChangeCaptcha();
                     this.Enabled = false;
                     Thread.Sleep(10000);
                     this.Enabled = true;
+                }
+                else
+                {
+                    SetCaptchaVisibility(true);
                 }
             }
         }

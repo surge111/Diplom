@@ -150,6 +150,7 @@ namespace Course
                 case "Провести":
                     {
                         order["OrderWorkerId"] = comboBox2.SelectedValue.ToString();
+                        order["OrderClientId"] = comboBox1.SelectedValue.ToString();
                         order["OrderDate"] = dateTimePicker1.Value.Date.ToString("yyyy-MM-dd");
                         order["OrderStatus"] = "Проведён";
                         bool confirmed;
@@ -167,6 +168,7 @@ namespace Course
                             button1.Text = "Сформировать чек";
                             dataGridView1.ContextMenuStrip = null;
                             comboBox2.Enabled = false;
+                            comboBox1.Enabled = false;
                             dateTimePicker1.Enabled = false;
                         }
                         else

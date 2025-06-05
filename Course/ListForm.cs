@@ -183,6 +183,7 @@ namespace Course
                         dataGridView1.Columns["OrderId"].Visible = true;
                         dataGridView1.Columns["OrderDate"].Visible = true;
                         dataGridView1.Columns["OrderStatus"].Visible = true;
+                        dataGridView1.Columns["OrderId"].HeaderText = "Номер заказа";
                         dataGridView1.Columns["OrderDate"].HeaderText = "Дата заказа";
                         dataGridView1.Columns["OrderStatus"].HeaderText = "Статус";
                         SetFioColumn(1);
@@ -304,7 +305,8 @@ namespace Course
             {
                 if (tableName == "worker" || tableName == "client")
                 {
-                    dataGridView1[columnIndex, i].Value = $"{dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Surname", i].Value} {dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Name", i].Value.ToString()[0]}.{dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Patronymic", i].Value.ToString()[0]}.";
+                    var fio = $"{dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Surname", i].Value.ToString()}" + (dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Name", i].Value.ToString() != "" ? $" {dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Name", i].Value.ToString()[0]}." : "") + (dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Patronymic", i].Value.ToString() != "" ? $" {dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Patronymic", i].Value.ToString()[0]}." : "");
+                    dataGridView1[columnIndex, i].Value = $"{dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Surname", i].Value} ..";
                 }
                 else
                 {
