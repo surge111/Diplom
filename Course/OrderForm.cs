@@ -44,6 +44,7 @@ namespace Course
             order.Add("OrderWorkerId", comboBox2.SelectedValue.ToString());
             order.Add("OrderDate", dateTimePicker1.Value.ToString("yyyy-MM-dd"));
             order.Add("OrderStatus", "Новый");
+            dateTimePicker1.MinDate = DateTime.Now.Date;
             if (User.Role == "Сотрудник")
             {
                 comboBox2.Enabled = false;
@@ -100,9 +101,9 @@ namespace Course
             {
                 dataGridView1.Columns[i].Visible = false;
             }
-            dataGridView1.Columns["OrderItemCost"].Visible = true;
-            dataGridView1.Columns["OrderItemQuantity"].Visible = true;
             dataGridView1.Columns["ProductName"].Visible = true;
+            dataGridView1.Columns["OrderItemQuantity"].Visible = true;
+            dataGridView1.Columns["OrderItemCost"].Visible = true;
             dataGridView1.Columns["ProductName"].HeaderText = "Товар";
             dataGridView1.Columns["OrderItemQuantity"].HeaderText = "Количество";
             dataGridView1.Columns["OrderItemCost"].HeaderText = "Стоимость";

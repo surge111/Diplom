@@ -24,7 +24,14 @@ namespace Course
             textBox1.Text = client["ClientSurname"];
             textBox2.Text = client["ClientName"];
             textBox3.Text = client["ClientPatronymic"];
-            maskedTextBox1.Text = client["ClientPhone"].Substring(1);
+            try
+            {
+                maskedTextBox1.Text = client["ClientPhone"].Substring(1);
+            }
+            catch
+            {
+                ;
+            }
             this.client = client;
         }
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)

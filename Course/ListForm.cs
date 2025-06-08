@@ -65,17 +65,22 @@ namespace Course
                     contextMenuStrip1.Items.Remove(contextMenuStrip1.Items["добавитьВЗаказToolStripMenuItem"]);
                 }
             }
-            if (tableName == "order")
-            {
-                panel1.Visible = false;
-                contextMenuStrip1.Items.Remove(contextMenuStrip1.Items["добавитьToolStripMenuItem"]);
-            }
             if (tableName != "product")
             {
                 panel2.Visible = false;
                 panel3.Visible = false;
+                panel4.Visible = false;
                 flowLayoutPanel2.Visible = false;
                 contextMenuStrip1.Items.Remove(contextMenuStrip1.Items["добавитьВЗаказToolStripMenuItem"]);
+            }
+            if (tableName == "order")
+            {
+                panel1.Visible = false;
+                panel3.Visible = true;
+                panel4.Visible = false;
+                textBox2.BackColor = Color.Goldenrod;
+                label4.Text = "заказ проведён";
+                contextMenuStrip1.Items.Remove(contextMenuStrip1.Items["добавитьToolStripMenuItem"]);
             }
             FillCombos();
             GetTotalPages();
@@ -188,6 +193,7 @@ namespace Course
                         dataGridView1.Columns["OrderStatus"].HeaderText = "Статус";
                         SetFioColumn(1);
                         dataGridView1.Columns["Fio"].HeaderText = "Сотрудник";
+                        MarkOrders();
                         break;
                     }
                 case "worker":
@@ -215,16 +221,20 @@ namespace Course
                 case "product":
                     {
                         dataGridView1.Columns["ProductName"].Visible = true;
-                        dataGridView1.Columns["ProductQuantity"].Visible = true;
+                        dataGridView1.Columns["ProductName"].DisplayIndex = 1;
                         dataGridView1.Columns["CategoryName"].Visible = true;
+                        dataGridView1.Columns["CategoryName"].DisplayIndex = 2;
                         dataGridView1.Columns["SupplierName"].Visible = true;
+                        dataGridView1.Columns["SupplierName"].DisplayIndex = 3;
+                        dataGridView1.Columns["ProductQuantity"].Visible = true;
+                        dataGridView1.Columns["ProductQuantity"].DisplayIndex = 4;
                         dataGridView1.Columns["ProductName"].HeaderText = "Наименование";
                         dataGridView1.Columns["ProductQuantity"].HeaderText = "Кол-во";
                         dataGridView1.Columns["CategoryName"].HeaderText = "Категория";
                         dataGridView1.Columns["SupplierName"].HeaderText = "Поставщик";
                         SetImageColumn(1);
-                        SetTotalCostColumn(5);
-                        SetProductStatusColumn(6);
+                        SetTotalCostColumn(6);
+                        SetProductStatusColumn(7);
                         MarkProducts();
                         break;
                     }
@@ -238,6 +248,20 @@ namespace Course
                 if (Convert.ToInt32(dataGridView1["ProductDiscount", i].Value.ToString()) >= 5)
                 {
                     dataGridView1["TotalCost", i].Style.BackColor = Color.LightGreen;
+                }
+                if (dataGridView1["Status", i].Value.ToString() != "В наличии")
+                {
+                    dataGridView1["Status", i].Style.BackColor = Color.IndianRed;
+                }
+            }
+        }
+        private void MarkOrders()
+        {
+            for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            {
+                if (dataGridView1["OrderStatus", i].Value.ToString() == "Проведён")
+                {
+                    dataGridView1["OrderStatus", i].Style.BackColor = Color.Goldenrod;
                 }
             }
         }
@@ -257,7 +281,14 @@ namespace Course
             dataGridView1.Columns.Insert(columnIndex, col);
             for (int i = 0; i < dataGridView1.Rows.Count; i++)
             {
-                dataGridView1[columnIndex, i].Value = $"{dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Phone", i].Value.ToString().Substring(0, 4) + "***" + dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Phone", i].Value.ToString().Substring(7)}";
+                if (dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Phone", i].Value.ToString() != "")
+                {
+                    dataGridView1[columnIndex, i].Value = $"{dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Phone", i].Value.ToString().Substring(0, 4) + "***" + dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Phone", i].Value.ToString().Substring(7)}";
+                }
+                else
+                {
+                    dataGridView1[columnIndex, i].Value = "";
+                }
             }
         }
         private void SetProductStatusColumn(int columnIndex)
@@ -306,7 +337,7 @@ namespace Course
                 if (tableName == "worker" || tableName == "client")
                 {
                     var fio = $"{dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Surname", i].Value.ToString()}" + (dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Name", i].Value.ToString() != "" ? $" {dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Name", i].Value.ToString()[0]}." : "") + (dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Patronymic", i].Value.ToString() != "" ? $" {dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Patronymic", i].Value.ToString()[0]}." : "");
-                    dataGridView1[columnIndex, i].Value = $"{dataGridView1[tableName[0].ToString().ToUpper() + tableName.Substring(1) + "Surname", i].Value} ..";
+                    dataGridView1[columnIndex, i].Value = fio;
                 }
                 else
                 {
@@ -336,7 +367,7 @@ namespace Course
                 {
                     try
                     {
-                        var imgPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\SetupInstaller\\Resources\\ProductImages\\" + dataGridView1["ProductImage", i].Value.ToString();
+                        var imgPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\AIS\\Resources\\ProductImages\\" + dataGridView1["ProductImage", i].Value.ToString();
                         dataGridView1.Rows[i].Cells[columnIndex].Value = new Bitmap(imgPath);
                     }
                     catch (Exception)

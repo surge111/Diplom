@@ -39,6 +39,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_29490F29493448E09AE27A8C93822C45"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_2C39AADF688F4903A357F275E72B3931"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -75,20 +81,14 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_813DF786AFAC40CFA8D7C8D736F78CB4"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_B79E2F0C90044EDC85E79605B6E4FD84"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_C72E8BC8B71B4431E77C3F10E4A1A3CC"
         "OwnerKey" = "8:_18D9F9A7B5FC42438ACF2B8FC88D7159"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C88BBDE9FF3D4F11A68DD2A197A6EB69"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -183,7 +183,7 @@
         "DisplayName" = "8:Debug"
         "IsDebugOnly" = "11:TRUE"
         "IsReleaseOnly" = "11:FALSE"
-        "OutputFilename" = "8:Debug\\SetupInstaller.msi"
+        "OutputFilename" = "8:Debug\\SetupAIS.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -215,7 +215,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\CourseInstaller.msi"
+        "OutputFilename" = "8:Release\\AISInstaller.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -299,6 +299,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_29490F29493448E09AE27A8C93822C45"
+            {
+            "SourcePath" = "8:..\\Course\\Resources\\ProductImages\\medovik.jpg"
+            "TargetName" = "8:medovik.jpg"
+            "Tag" = "8:"
+            "Folder" = "8:_E3CBCCD33A8644578EC3B1D859968384"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2C39AADF688F4903A357F275E72B3931"
@@ -403,46 +423,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_813DF786AFAC40CFA8D7C8D736F78CB4"
-            {
-            "SourcePath" = "8:..\\course\\resources\\\\ProductImages\\medovik.jpg"
-            "TargetName" = "8:medovik.jpg"
-            "Tag" = "8:"
-            "Folder" = "8:_E40DB3F3610F4ECE83A1E1E559FF84DA"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B79E2F0C90044EDC85E79605B6E4FD84"
-            {
-            "SourcePath" = "8:..\\course\\resources\\\\ProductImages\\baguette.jpg"
-            "TargetName" = "8:baguette.jpg"
-            "Tag" = "8:"
-            "Folder" = "8:_E40DB3F3610F4ECE83A1E1E559FF84DA"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C72E8BC8B71B4431E77C3F10E4A1A3CC"
             {
             "AssemblyRegister" = "3:1"
@@ -472,6 +452,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C88BBDE9FF3D4F11A68DD2A197A6EB69"
+            {
+            "SourcePath" = "8:..\\Course\\Resources\\ProductImages\\baguette.jpg"
+            "TargetName" = "8:baguette.jpg"
+            "Tag" = "8:"
+            "Folder" = "8:_E3CBCCD33A8644578EC3B1D859968384"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D33BB1D6FC061A5B267D3327C116ABA2"
@@ -612,7 +612,7 @@
                     "Property" = "8:_88E1A66F5B4B459FA4B8FEB3BF318115"
                         "Folders"
                         {
-                            "{9EF0B969-E518-4E46-987F-47570745A589}:_E40DB3F3610F4ECE83A1E1E559FF84DA"
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_E3CBCCD33A8644578EC3B1D859968384"
                             {
                             "Name" = "8:ProductImages"
                             "AlwaysCreate" = "11:FALSE"
@@ -621,6 +621,50 @@
                             "Property" = "8:_172C271E639C414AB7DF44B96AD2797E"
                                 "Folders"
                                 {
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            "{1525181F-901A-416C-8A58-119130FE478E}:_870F0011F3A84AB2ADD2F2EC5722C0C5"
+            {
+            "Name" = "8:#1915"
+            "AlwaysCreate" = "11:FALSE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Property" = "8:AppDataFolder"
+                "Folders"
+                {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_C8FCD5DA1B5A45648C0AC5B9649505F1"
+                    {
+                    "Name" = "8:AIS"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_3D776286063045EDA56FE1291B179272"
+                        "Folders"
+                        {
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_CE77CD460ACC41FEA0D2FD535292F249"
+                            {
+                            "Name" = "8:Resources"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_80C3D55013B845AA87A40C7D549C8BBD"
+                                "Folders"
+                                {
+                                    "{9EF0B969-E518-4E46-987F-47570745A589}:_F15651E557E846EB8FB88BC4F722FE1E"
+                                    {
+                                    "Name" = "8:ProductImages"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "Condition" = "8:"
+                                    "Transitive" = "11:FALSE"
+                                    "Property" = "8:_C58549227CD841A2A53AB82DCBA940BE"
+                                        "Folders"
+                                        {
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -664,9 +708,9 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:SetupInstaller"
+        "ProductName" = "8:AIS"
         "ProductCode" = "8:{2CE5111B-EA51-475B-8707-85707A41E9E0}"
-        "PackageCode" = "8:{3ECC8848-76FC-4678-87CE-ED32097D632E}"
+        "PackageCode" = "8:{9ED38C54-5084-40C1-8371-3CE2F9293AAB}"
         "UpgradeCode" = "8:{F16FB7BC-C97D-4609-B523-AAFF6D6DE3AA}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
@@ -677,7 +721,7 @@
         "Manufacturer" = "8:surge111"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:CourseInstaller"
+        "Title" = "8:AIS"
         "Subject" = "8:"
         "ARPCONTACT" = "8:"
         "Keywords" = "8:"

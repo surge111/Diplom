@@ -42,11 +42,11 @@ namespace Course
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\SetupInstaller\\Resources\\ProductImages\\");
+            Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\AIS\\Resources\\ProductImages\\");
             try
             {
-                pictureBox1.Image = new Bitmap(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\SetupInstaller\\Resources\\ProductImages\\" + product["ProductImage"]);
-                imagePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\SetupInstaller\\Resources\\ProductImages\\" + product["ProductImage"];
+                pictureBox1.Image = new Bitmap(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\AIS\\Resources\\ProductImages\\" + product["ProductImage"]);
+                imagePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\AIS\\Resources\\ProductImages\\" + product["ProductImage"];
             }
             catch (Exception)
             {
@@ -237,7 +237,7 @@ namespace Course
         private void pictureBox1_Click(object sender, EventArgs e)
         {
             var file = new OpenFileDialog();
-            file.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\SetupInstaller\\Resources\\ProductImages\\";
+            file.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\AIS\\Resources\\ProductImages\\";
             file.Filter = "jpg images|*.jpg";
             file.Multiselect = false;
             var res = file.ShowDialog();
@@ -257,7 +257,7 @@ namespace Course
             {
                 int i = 1;
                 var newImg = imagePath.Substring(imagePath.LastIndexOf("\\") + 1);
-                while (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\SetupInstaller\\Resources\\ProductImages\\" + newImg))
+                while (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\AIS\\Resources\\ProductImages\\" + newImg))
                 {
                     newImg = imagePath.Substring(imagePath.LastIndexOf("\\") + 1, imagePath.Substring(imagePath.LastIndexOf("\\") + 1).Length - 4) + $" ({i}).jpg";
                     i++;
@@ -266,9 +266,9 @@ namespace Course
                 try
                 {
                     File.Copy(imagePath,
-                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\SetupInstaller\\Resources\\ProductImages\\" + newImg,
+                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\AIS\\Resources\\ProductImages\\" + newImg,
                         true);
-                    imagePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\SetupInstaller\\Resources\\ProductImages\\" + newImg;
+                    imagePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\AIS\\Resources\\ProductImages\\" + newImg;
                 }
                 catch (Exception ex)
                 {

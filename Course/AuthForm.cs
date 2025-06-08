@@ -186,11 +186,11 @@ namespace Course
                 e.Cancel = true;
                 return;
             }
-            var dumpDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), $"SetupInstaller\\Saves\\save_{DateTime.Now.Date.ToString("dd_MM_yyyy")}");
+            var dumpDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), $"AIS\\Saves\\save_{DateTime.Now.Date.ToString("dd_MM_yyyy")}");
             var i = 1;
             while (Directory.Exists(dumpDir))
             {
-                dumpDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), $"SetupInstaller\\Saves\\save_{DateTime.Now.Date.ToString("dd_MM_yyyy")}_{i}");
+                dumpDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), $"AIS\\Saves\\save_{DateTime.Now.Date.ToString("dd_MM_yyyy")}_{i}");
                 i++;
             }
             Directory.CreateDirectory(dumpDir);

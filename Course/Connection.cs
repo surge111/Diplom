@@ -934,7 +934,7 @@ namespace Course
         }
         static public DataTable GetOrderItems(string orderId)
         {
-            var cmdText = "select * from `orderitem`";
+            var cmdText = "select `product`.*, `orderitem`.* from `orderitem`";
             cmdText += " inner join `product` on ProductId=OrderItemProductId";
             cmdText += $" where OrderItemOrderId=\"{orderId}\"";
             bool opened;
@@ -1429,25 +1429,24 @@ namespace Course
                 throw ex;
             }
             var cmd = new MySqlCommand($"select {string.Join(", ", columns)} from `{tableName}`", conn);
-            //var rdr = cmd.ExecuteReader();
-            
             using (StreamWriter sw = new StreamWriter(file))
             {
                 sw.WriteLine(string.Join(";", columns));
                 using (var rdr = cmd.ExecuteReader())
                 {
-                    //var arr = new string[] { };
-                    //foreach (var col in columns)
-                    //{
-                    //    arr = arr.Append(rdr[col].ToString()).ToArray();
-                    //}
-                    //sw.WriteLine(string.Join(";", arr));
                     while (rdr.Read())
                     {
                         var arr = new string[] { };
                         foreach (var col in columns)
                         {
-                            arr = arr.Append(rdr[col].ToString()).ToArray();
+                            if (col == "OrderDate" || col == "ProductExpirationDate")
+                            {
+                                arr = arr.Append(DateTime.Parse(rdr[col].ToString()).ToString("yyyy-MM-dd")).ToArray();
+                            }
+                            else
+                            {
+                                arr = arr.Append(rdr[col].ToString()).ToArray();
+                            }
                         }
                         sw.WriteLine(string.Join(";", arr));
                     }
